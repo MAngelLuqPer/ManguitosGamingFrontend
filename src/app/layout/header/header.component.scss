@@ -1,0 +1,28 @@
+header {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    position: sticky;
+}
+
+.input-group{
+    margin: 30px;
+}
+
+img {
+    width: 80px;
+    height: 80px;
+}
+
+h3 {
+    color: var(--header-text-color);
+}
+
+.reg-btn {
+    color: white;
+    background-color: var(--header-text-color);
+}
+
+.custom-button {
+    min-width: 150px;
+    padding: 10px 20px;
+    text-align: center;
+}

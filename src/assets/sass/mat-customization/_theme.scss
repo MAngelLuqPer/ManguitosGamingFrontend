@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@import 'main-palette';
+
+html {
+    color-scheme: light dark;
+
+    @include mat.theme(
+        (
+        color: (
+            primary: $primary-palette,
+            tertiary: $tertiary-palette,
+            theme-type: light,
+        ),
+        density: 0
+    ));
+    --text-color: black;
+    --header-text-color: #{map.get(map.get($_palettes, primary), 50)};
+    --form-bg-color: #{map.get(map.get($_palettes, secondary), 90)};
+    --form-content-bg-color: #{map.get(map.get($_palettes, primary), 100)};
+    --hover-color: #{map.get(map.get($_palettes, secondary), 90)};
+    --selected-color: #{map.get(map.get($_palettes, primary), 40)};
+}
+
+html.dark-mode {
+    @include mat.theme((
+        color: (
+            primary: $primary-palette,
+            tertiary: $tertiary-palette,
+            theme-type: dark,
+        ),
+    ),
+        $overrides: ("background": #2d3237)
+    );
+    body {
+        background-color: #2d3237;
+    }
+    --header-background-color: #{map.get(map.get($_palettes, primary), 20)};
+    --form-bg-color: #{map.get(map.get($_palettes, neutral), 50)};
+    --form-content-bg-color: #{map.get(map.get($_palettes, secondary), 10)};
+    --text-color: white;
+    --hover-color: #{map.get(map.get($_palettes, secondary), 10)};
+}
+
+.content {
+    min-height: 100vh;
+    background-color: var(--mat-sys-background);
+    color: var(--mat-sys-on-background);
+}
+
+.mat-dialog-content {
+    max-height: 70vh; /* Limita la altura máxima del contenido */
+    overflow-y: auto; /* Habilita el scroll vertical */
+    padding: 30px;
+    h2 {
+        color: var(--text-color);
+    }
+}

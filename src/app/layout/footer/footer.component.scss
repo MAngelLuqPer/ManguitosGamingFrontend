@@ -1,0 +1,25 @@
+.social-icon {
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+
+}
+
+.social-icon i {
+    width: 100%;
+    text-align: center;
+    &:hover {
+        color: var(--header-text-color);
+    }
+}
+
+footer {
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Sombra hacia arriba */
+
+}
+img {
+    width: 80px;
+    height: 80px;
+}
