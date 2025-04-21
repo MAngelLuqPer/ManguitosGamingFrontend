@@ -1,8 +1,14 @@
 header {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     position: sticky;
+    background-color: var(--header-background-color);
+    mat-form-field{
+        width:300px
+    }
 }
-
+mat-slide-toggle{
+    padding-right: 20px;
+}
 .input-group{
     margin: 30px;
 }

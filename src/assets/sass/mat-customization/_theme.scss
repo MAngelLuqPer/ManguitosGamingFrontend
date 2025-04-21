@@ -20,6 +20,7 @@ html {
     --form-content-bg-color: #{map.get(map.get($_palettes, primary), 100)};
     --hover-color: #{map.get(map.get($_palettes, secondary), 90)};
     --selected-color: #{map.get(map.get($_palettes, primary), 40)};
+    --header-background-color: #{map.get(map.get($_palettes, primary), 100)};
 }
 
 html.dark-mode {
@@ -35,7 +36,7 @@ html.dark-mode {
     body {
         background-color: #2d3237;
     }
-    --header-background-color: #{map.get(map.get($_palettes, primary), 20)};
+    --header-background-color: #{map.get(map.get($_palettes, primary), 10)};
     --form-bg-color: #{map.get(map.get($_palettes, neutral), 50)};
     --form-content-bg-color: #{map.get(map.get($_palettes, secondary), 10)};
     --text-color: white;

@@ -10,14 +10,17 @@
 .social-icon i {
     width: 100%;
     text-align: center;
+    color: var(--text-color);
     &:hover {
         color: var(--header-text-color);
     }
 }
 
 footer {
+    margin-top: 30px;
     box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); /* Sombra hacia arriba */
-
+    background-color: var(--header-background-color);
+    color: var(--text-color);
 }
 img {
     width: 80px;

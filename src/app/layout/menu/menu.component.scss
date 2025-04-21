@@ -1,0 +1,121 @@
+
+.sidenav-container {
+    height: 100vh;
+    display: flex;
+    padding-right: 10px;
+    padding-left: 5px;
+  }
+  .community-thumbnail {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    margin-right: 8px;
+    object-fit: cover;
+    vertical-align: middle;
+  }
+  .sidenav {
+    width: 200px; 
+  }
+  .sidenav.collapsed {
+    width: 70px; // Ancho reducido cuando está contraído
+  }
+.logo {
+  margin-left: 10px;
+  width: 50px;
+  height: 50px;
+}
+.menu-item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 8px;
+    font-family: Inconsolata;
+    mat-icon {
+      margin-right: 10px;
+      flex-shrink: 0;
+  }
+  &:hover {
+    text-decoration: underline;
+    background-color: var(--hover-color);
+  }
+}
+mat-expansion-panel {
+  margin: 0 ;
+  padding: 0 !important;
+  border: none;
+  padding: 10px 15px;
+  box-shadow: none !important;
+  
+
+
+  .menu-subitem{
+    @extend .menu-item;
+    padding: 15px;
+    &:hover {
+      background-color:transparent;
+      text-decoration: none;
+    }
+  }
+
+  &.mat-expanded .mat-expansion-panel-header {
+    color:  var(--selected-color);
+    border-radius: 8px 8px 0px 0px; 
+    background-color: var(--hover-color);
+  }
+
+  &.mat-expanded {
+    margin: 0 ; 
+    box-shadow: none;
+  }
+
+  .mat-expansion-panel-header {
+    padding:0 5px;
+    &:hover {
+      background-color: var(--hover-color) !important;
+      text-decoration: underline !important;
+    }
+  }
+}
+
+
+::ng-deep .mat-expansion-panel-body{
+  background-color: rgba(211, 211, 211, 0.418);
+  border-radius: 0px 0px 8px 8px;
+}
+
+.collapse-button {
+  @extend .menu-item;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  background-color: var(--hover-color);
+  bottom: 0;
+  left: 0; 
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0px -5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.childrens{
+  width: 100%;
+  color: var(--text-color);
+  span {
+    padding-left: 10px;
+    border-left: 1px solid gray;
+    &:hover {
+      border-left: 2px solid var(--selected-color);
+    }
+  }
+}
+
+.active-menu-item {
+  color:  var(--selected-color);
+  border-radius: 8px; 
+  background-color: var(--hover-color);
+}
+.active-submenu-item {
+  border-left: 3px solid var(--selected-color);
+  background-color: var(--hover-color) ;
+}

@@ -1,0 +1,97 @@
+<form class="identification__form">
+<div class="identification__content">
+<h2>Registrarse</h2>
+<div>
+    <mat-form-field appearance="outline">
+    <mat-label>Correo Electrónico</mat-label>
+    <mat-icon matPrefix>email</mat-icon>
+    <input
+        matInput
+        id="email"
+        type="email"
+        [formControl]="emailFormControl"
+        [errorStateMatcher]="matcher"
+    />
+    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+        Por favor, introduce una dirección de correo válida.
+    </mat-error>
+    <mat-error *ngIf="emailFormControl.hasError('required')">
+        El correo electrónico es <strong>obligatorio</strong>.
+    </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput placeholder="Escribe una breve descripción para su perfil"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+    <mat-label>Contraseña</mat-label>
+    <mat-icon matPrefix>lock</mat-icon>
+    <input
+        matInput
+        id="password"
+        type="password"
+        [formControl]="passwordFormControl"
+        [errorStateMatcher]="matcher"
+    />
+    </mat-form-field>
+
+    <div class="d-flex flex-column">
+    <label [ngClass]="{'text-success': !passwordFormControl.hasError('minlength'), 'text-danger': passwordFormControl.hasError('minlength') || passwordFormControl.hasError('required')}">
+        <i class="material-icons">{{ !passwordFormControl.hasError('minlength') && !passwordFormControl.hasError('required') ? 'check_circle' : 'cancel' }}</i>
+        Debe incluir al menos 8 caracteres.
+    </label>
+    <label [ngClass]="{'text-success': hasUpperCase, 'text-danger': !hasUpperCase}">
+        <i class="material-icons">{{ hasUpperCase ? 'check_circle' : 'cancel' }}</i>
+        Debe incluir al menos una letra mayúscula.
+    </label>
+    <label [ngClass]="{'text-success': hasLowerCase, 'text-danger': !hasLowerCase}">
+        <i class="material-icons">{{ hasLowerCase ? 'check_circle' : 'cancel' }}</i>
+        Debe incluir al menos una letra minúscula.
+    </label>
+    <label [ngClass]="{'text-success': hasNumber, 'text-danger': !hasNumber}">
+        <i class="material-icons">{{ hasNumber ? 'check_circle' : 'cancel' }}</i>
+        Debe incluir al menos un número.
+    </label>
+    <label [ngClass]="{'text-success': hasSpecialChar, 'text-danger': !hasSpecialChar}">
+        <i class="material-icons">{{ !hasSpecialChar ? 'cancel' : 'check_circle' }}</i>
+        Debe incluir al menos un carácter especial.
+    </label>
+    </div>
+
+    <mat-form-field appearance="outline">
+    <mat-label>Confirmar contraseña</mat-label>
+    <mat-icon matPrefix>spellcheck</mat-icon>
+    <input
+        matInput
+        id="confirmPassword"
+        type="password"
+        [formControl]="confirmPasswordControl"
+        [errorStateMatcher]="matcher"
+    />
+    <mat-error *ngIf="confirmPasswordControl.hasError('required')">
+        La confirmación de la contraseña es <strong>obligatoria</strong>.
+    </mat-error>
+    </mat-form-field>
+    <label [ngClass]="{'text-success': confirmPasswordMatch, 'text-danger': !confirmPasswordMatch}">
+    <i class="material-icons">{{ !confirmPasswordMatch ? 'cancel' : 'check_circle' }}</i>
+    La contraseña coincide.
+    </label>
+</div>
+
+
+<div class="radio-group">
+    <mat-label>Visibilidad del perfil</mat-label>
+    <mat-radio-group [(ngModel)]="visibility" name="visibility">
+    <mat-radio-button value="publico">Público</mat-radio-button>
+    <mat-radio-button value="privado">Privado</mat-radio-button>
+    </mat-radio-group>
+</div>
+
+<div class="buttons__container">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!isFormValid()">
+    Registrarse
+    </button>
+    <a mat-button routerLink="/login">Identificarse</a>
+</div>
+</div>
+</form>

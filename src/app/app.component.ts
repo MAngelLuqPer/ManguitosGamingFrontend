@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { LightDarkService } from './services/light-dark.service'; // Ajusta la ruta si es necesario
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
@@ -9,4 +9,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'proyectofct';
+  constructor(private lightDarkService: LightDarkService) {}
 }

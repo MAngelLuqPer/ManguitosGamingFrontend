@@ -1,0 +1,32 @@
+<mat-sidenav-container class="sidenav-container" autosize="true">
+  <mat-sidenav mode="side" opened class="sidenav" [class.collapsed]="collapse" [disableClose]="true">
+    <img src="assets/images/MangoLogo.png" class="logo">
+    <div *ngFor="let item of sideMenu" class="my-2">
+      <ng-container *ngIf="item.children && item.children.length > 0; else singleItem">
+        <mat-expansion-panel *ngIf="!collapse" routerLinkActive="active-menu-item">
+          <mat-expansion-panel-header>
+            <div class="menu-subitem">
+              <mat-icon [matTooltip]="item.tip">{{ item.icon }}</mat-icon>
+              <span [hidden]="collapse">{{ item.name }}</span>
+            </div>
+          </mat-expansion-panel-header>
+          <div *ngFor="let child of item.children" [routerLink]="child.route" class="childrens" routerLinkActive="active-submenu-item">
+            <img [src]="'assets/images/' + child.foto" alt="{{ child.name }}" class="community-thumbnail" />
+            <span [style.cursor]="'pointer'">{{ child.name }}</span>
+          </div>
+        </mat-expansion-panel>
+      </ng-container>
+      <ng-template #singleItem>
+        <div [routerLink]="item.route" routerLinkActive="active-menu-item" [routerLinkActiveOptions]="{ exact: true }" class="menu-item">
+          <mat-icon [matTooltip]="item.tip">{{ item.icon }}</mat-icon>
+          <span [hidden]="collapse">{{ item.name }}</span>
+        </div>
+      </ng-template>
+    </div>
+    <div mat-menu-item (click)="toggleSidebar()" class="collapse-button">
+      <mat-icon *ngIf="collapse" aria-hidden="false" aria-label="deploy sidenav" fontIcon="view_headline" matTooltip="Abrir menú"></mat-icon>
+      <mat-icon *ngIf="!collapse" aria-hidden="false" aria-label="close sidenav" fontIcon="close" matTooltip="Cerrar menú"></mat-icon>
+      <span [hidden]="collapse">Colapsar menú</span>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>
