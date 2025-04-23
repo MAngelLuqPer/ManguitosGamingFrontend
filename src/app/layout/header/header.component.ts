@@ -8,16 +8,33 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LightDarkService } from '../../services/light-dark.service'; 
-
+import { OnInit } from '@angular/core';
+import { MatMenu } from '@angular/material/menu';
+import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-header',
-  imports: [ MatMenuModule,RouterModule,MatInputModule, MatIconModule,MatButtonModule,MatSlideToggleModule,RouterLink,FormsModule],
+  imports: [ NgIf,MatMenu,MatMenuModule,RouterModule,MatInputModule, MatIconModule,MatButtonModule,MatSlideToggleModule,RouterLink,FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  userName: string | null = null;
   constructor(public lightDarkService: LightDarkService) {}
   toggleDarkMode(): void {
     this.lightDarkService.toggleDarkMode();
   }
+
+  ngOnInit(): void {
+    const usuario = localStorage.getItem('usuario');
+    if (usuario) {
+      const usuarioObj = JSON.parse(usuario);
+      this.userName = usuarioObj.nombre || null;
+    }
+  }
+
+  logout(): void {
+    localStorage.removeItem('usuario');
+    this.userName = null;
+  }
+
 }

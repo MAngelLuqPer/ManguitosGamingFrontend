@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms'; 
 import { MatRadioModule } from '@angular/material/radio';
+import { Router } from '@angular/router';
+import { UsuarioApiService } from '../services/usuario-api.service';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -37,8 +39,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 
 export class RegisterComponent {
-  visibility: string = 'publico';
-
+    visibility: boolean = true;
+    desc: string = '';
+    registerError: string | null = null;
     emailFormControl = new FormControl('', [Validators.required, Validators.email]);
     passwordFormControl = new FormControl('', [Validators.required,
       Validators.minLength(8),
@@ -47,10 +50,11 @@ export class RegisterComponent {
       Validators.pattern(/\d/),  
       Validators.pattern(/[\W_]/)
       ]);
-      confirmPasswordControl = new FormControl('', [Validators.required,])
-      
+      confirmPasswordControl = new FormControl('', [Validators.required,]);
+      nameFormControl = new FormControl('', [Validators.required]);
   
     matcher = new MyErrorStateMatcher();
+    constructor(private UsuarioApiService: UsuarioApiService, private Router: Router){}
 
     get hasUpperCase(): boolean {
       const value = this.passwordFormControl.value || '';
@@ -89,5 +93,30 @@ export class RegisterComponent {
         this.confirmPasswordControl.valid &&
         this.confirmPasswordMatch
       );
+    }
+
+    register():void{
+      
+      if (!this.isFormValid()) {
+        alert('Por favor, completa todos los campos correctamente.');
+        return;
+      }
+      const nombre = this.nameFormControl.value!;
+      const email = this.emailFormControl.value!;
+      const password = this.passwordFormControl.value!;
+      const descripcion = this.desc;
+      alert('Descripción: ' + descripcion);
+      const privacidad = this.visibility;
+  
+      this.UsuarioApiService.register(nombre, email, descripcion, privacidad, password).subscribe({
+        next: (response) => {
+          alert('Registro exitoso');
+          console.log(response);
+        },
+        error: (error) => {
+          this.registerError = 'Error al registrar el usuario. Por favor, inténtalo de nuevo.';
+          console.error(error);
+        },
+      });
     }
 }

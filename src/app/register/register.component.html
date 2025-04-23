@@ -21,7 +21,17 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
     <mat-label>Descripción</mat-label>
-    <textarea matInput placeholder="Escribe una breve descripción para su perfil"></textarea>
+    <textarea matInput placeholder="Escribe una breve descripción para su perfil" [(ngModel)]="desc" name="desc"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <mat-icon matPrefix>account_box</mat-icon>
+        <input
+            matInput
+            id="name"
+            [formControl]="nameFormControl"
+            [errorStateMatcher]="matcher"
+        />
     </mat-form-field>
     <mat-form-field appearance="outline">
     <mat-label>Contraseña</mat-label>
@@ -82,13 +92,15 @@
 <div class="radio-group">
     <mat-label>Visibilidad del perfil</mat-label>
     <mat-radio-group [(ngModel)]="visibility" name="visibility">
-    <mat-radio-button value="publico">Público</mat-radio-button>
-    <mat-radio-button value="privado">Privado</mat-radio-button>
+    <mat-radio-button value="true">Público</mat-radio-button>
+    <mat-radio-button value="false">Privado</mat-radio-button>
     </mat-radio-group>
 </div>
-
+<div *ngIf="registerError" class="error-message">
+    <p>{{ registerError }}</p>
+</div>
 <div class="buttons__container">
-    <button mat-raised-button color="primary" type="submit" [disabled]="!isFormValid()">
+    <button mat-raised-button color="primary" (click)="register()" [disabled]="!isFormValid()">
     Registrarse
     </button>
     <a mat-button routerLink="/login">Identificarse</a>

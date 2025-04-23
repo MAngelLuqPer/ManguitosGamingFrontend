@@ -1,50 +1,52 @@
 <form class="identification__form container-fluid">
-    <div class="identification__content">
-      <h2>Identificarse</h2>
-      <div>
-        <mat-form-field appearance="outline">
-          <mat-label>Correo Electrónico</mat-label>
-          <mat-icon matPrefix>email</mat-icon>
-          <input
-            matInput
-            id="email"
-            type="email"
-            [formControl]="emailFormControl"
-            [errorStateMatcher]="matcher"
-          />
-          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-              Por favor, introduce una dirección de correo válida.
-            </mat-error>
-            <mat-error  *ngIf="emailFormControl.hasError('required')">
-              El correo electrónico es <strong>obligatorio</strong>.
-            </mat-error>
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline">
-          <mat-label>Contraseña</mat-label>
-          <mat-icon matPrefix>lock</mat-icon>
-          <input
-            matInput
-            id="password"
-            type="password"
-            [formControl]="passwordFormControl"
-            [errorStateMatcher]="matcher"
-          />
-          <mat-error *ngIf="passwordFormControl.hasError('required')">
-            <small>La contraseña es obligatoria.</small>
-          </mat-error>
-        </mat-form-field>
-        <mat-checkbox>
-          Recuerdame
-        </mat-checkbox>
-      </div>
-  
-      <div class="buttons__container">
-        <button mat-raised-button color="primary" type="submit">
-          Iniciar Sesión
-        </button>
-        <a mat-button routerLink="/register">¿No tienes cuenta? Regístrate aquí</a>
-        <a mat-button routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
-      </div>
+<div class="identification__content">
+    <h2>Identificarse</h2>
+    <div>
+    <mat-form-field appearance="outline">
+        <mat-label>Correo Electrónico</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input
+        matInput
+        id="email"
+        type="email"
+        [formControl]="emailFormControl"
+        [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            Por favor, introduce una dirección de correo válida.
+        </mat-error>
+        <mat-error  *ngIf="emailFormControl.hasError('required')">
+            El correo electrónico es <strong>obligatorio</strong>.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
+        <input
+        matInput
+        id="password"
+        type="password"
+        [formControl]="passwordFormControl"
+        [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+        <small>La contraseña es obligatoria.</small>
+        </mat-error>
+    </mat-form-field>
+    <mat-checkbox>
+        Recuerdame
+    </mat-checkbox>
     </div>
-  </form>
+    <div *ngIf="loginError" class="error-message">
+        <p>{{ loginError }}</p>
+    </div>
+    <div class="buttons__container">
+    <button mat-raised-button color="primary" type="submit" (click)="login()">
+        Iniciar Sesión
+    </button>
+    <a mat-button routerLink="/register">¿No tienes cuenta? Regístrate aquí</a>
+    <a mat-button routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+    </div>
+</div>
+</form>

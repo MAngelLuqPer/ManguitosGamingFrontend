@@ -20,10 +20,18 @@
         <mat-icon matPrefix>search</mat-icon>
         </mat-form-field>
     </div>
-    <div class="d-flex gap-2">
-    <button class="rounded-5 custom-button" routerLink="/login">Iniciar sesión</button>
-    <button class="reg-btn rounded-5 p-2" routerLink="/register">Registrarse</button>
-    </div>
+        <div class="d-flex gap-2">
+            <div mat-button [matMenuTriggerFor]="userDropdown">
+                <span>¡Hola, {{ userName || 'Usuario' }}! &#9662;</span>
+            </div>
+            <mat-menu #userDropdown="matMenu">
+                <button mat-menu-item (click)="logout()" *ngIf="userName">Cerrar sesión</button>
+                <button mat-menu-item>Administrar perfil</button>
+                <button mat-menu-item routerLink="/login" *ngIf="!userName">Identificarse</button>
+            </mat-menu>
+            <button class="rounded-5 custom-button" routerLink="/login" *ngIf="userName">Iniciar sesión</button>
+            <button class="reg-btn rounded-5 p-2" routerLink="/register" *ngIf="userName">Registrarse</button>
+        </div>
     </div>
 </div>
 </div>
