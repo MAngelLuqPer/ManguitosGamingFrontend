@@ -105,12 +105,10 @@ export class RegisterComponent {
       const email = this.emailFormControl.value!;
       const password = this.passwordFormControl.value!;
       const descripcion = this.desc;
-      alert('Descripción: ' + descripcion);
       const privacidad = this.visibility;
   
       this.UsuarioApiService.register(nombre, email, descripcion, privacidad, password).subscribe({
         next: (response) => {
-          alert('Registro exitoso');
           console.log(response);
         },
         error: (error) => {
