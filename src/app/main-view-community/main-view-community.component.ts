@@ -20,7 +20,6 @@ constructor(private route: ActivatedRoute, private ComunidadesApiService: Comuni
 
 
   ngOnInit(): void {
-    // Captura el parámetro `id` de la URL
     this.route.paramMap.subscribe((params) => {
       this.comunidadId = params.get('id')!;
       this.loadComunidad();
@@ -40,12 +39,11 @@ constructor(private route: ActivatedRoute, private ComunidadesApiService: Comuni
   loadComunidad(): void {
     this.ComunidadesApiService.getComunidadById(this.comunidadId).subscribe({
       next: (data) => {
-        // Procesa la fecha de creación para eliminar el sufijo [UTC]
         if (data.fechaCreacion) {
           data.fechaCreacion = data.fechaCreacion.replace('[UTC]', '');
         }
         this.comunidad = data;
-        console.log('Datos de la comunidad:', this.comunidad); // Verifica los datos cargados
+        console.log('Datos de la comunidad:', this.comunidad);
       },
       error: (error) => {
         console.error('Error al cargar la comunidad:', error);
