@@ -1,0 +1,25 @@
+.community-info-card {
+    margin-bottom: 20px;
+    padding: 16px;
+    width: 440px;
+  }
+
+  .info-item {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  
+  .info-item mat-icon {
+    margin-right: 8px;
+    color: #757575;
+  }
+  .post-card {
+    margin-bottom: 16px;
+  }
+
+  .container-fluid {
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos horizontalmente */
+    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+    gap: 20px; /* Espaciado entre las secciones */
+  }

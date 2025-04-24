@@ -42,6 +42,7 @@ export class RegisterComponent {
     visibility: boolean = true;
     desc: string = '';
     registerError: string | null = null;
+    registerSuccess: string | null = null;
     emailFormControl = new FormControl('', [Validators.required, Validators.email]);
     passwordFormControl = new FormControl('', [Validators.required,
       Validators.minLength(8),
@@ -110,6 +111,7 @@ export class RegisterComponent {
       this.UsuarioApiService.register(nombre, email, descripcion, privacidad, password).subscribe({
         next: (response) => {
           console.log(response);
+          this.registerSuccess = 'Usuario registrado con éxito.';
         },
         error: (error) => {
           this.registerError = 'Error al registrar el usuario. Por favor, inténtalo de nuevo.';

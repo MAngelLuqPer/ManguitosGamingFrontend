@@ -92,13 +92,18 @@
 <div class="radio-group">
     <mat-label>Visibilidad del perfil</mat-label>
     <mat-radio-group [(ngModel)]="visibility" name="visibility">
-    <mat-radio-button value="true">Público</mat-radio-button>
-    <mat-radio-button value="false">Privado</mat-radio-button>
+    <mat-radio-button  [value]="true">Público</mat-radio-button>
+    <mat-radio-button  [value]="false">Privado</mat-radio-button>
     </mat-radio-group>
 </div>
-<div *ngIf="registerError" class="error-message">
+<div *ngIf="registerError" class="text-danger">
     <p>{{ registerError }}</p>
 </div>
+
+<div *ngIf="registerSuccess" class="text-success">
+    <p class="text-success">{{ registerSuccess }}</p>
+</div>
+
 <div class="buttons__container">
     <button mat-raised-button color="primary" (click)="register()" [disabled]="!isFormValid()">
     Registrarse

@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="posts-section">
+        <h2>Publicaciones de la comunidad {{ comunidadId }}</h2>
+        <div *ngIf="posts.length > 0; else noPosts">
+        <div *ngFor="let post of posts" class="post">
+            <h3>{{ post.titulo }}</h3>
+            <p>{{ post.contenido }}</p>
+            <small>Publicado el: {{ post.fechaPublicacion || 'aa' }}</small>
+        </div>
+        </div>
+        <ng-template #noPosts>
+        <p>No hay publicaciones disponibles para esta comunidad.</p>
+        </ng-template>
+    </div>
+    <mat-card class="community-info-card">
+        <mat-card-header>
+        <mat-card-title>Información de la comunidad</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+        <div class="info-item">
+            <mat-icon>description</mat-icon>
+            <span><strong>Descripción:</strong> {{ comunidad?.descripcion || 'Sin descripción' }}</span>
+        </div>
+        <div class="info-item">
+            <mat-icon>rule</mat-icon>
+            <span><strong>Reglas:</strong> Respeto a los miembros. Hacer publicaciones relacionadas con la comunidad. Evitar hablar de piratería y temas ilegales.</span>
+        </div>
+        <div class="info-item">
+            <mat-icon>calendar_today</mat-icon>
+            <span><strong>Fecha de creación:</strong> {{ comunidad?.fechaCreacion | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="info-item">
+            <mat-icon>group</mat-icon>
+            <span><strong>Número de miembros:</strong> {{ comunidad?.numMiembros || '0' }} miembros</span>
+        </div>
+        </mat-card-content>
+    </mat-card>
+</div>

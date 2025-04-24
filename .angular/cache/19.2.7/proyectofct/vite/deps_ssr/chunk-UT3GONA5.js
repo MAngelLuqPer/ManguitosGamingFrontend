@@ -1,10 +1,10 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
   MatRipple
-} from "./chunk-VRKQSMMH.js";
+} from "./chunk-OHV2OVDX.js";
 import {
   MatCommonModule
-} from "./chunk-FJE36WIA.js";
+} from "./chunk-B67NZ5IA.js";
 import {
   NgModule,
   setClassMetadata,
@@ -39,4 +39,4 @@ var MatRippleModule = class _MatRippleModule {
 export {
   MatRippleModule
 };
-//# sourceMappingURL=chunk-5YPFFETR.js.map
+//# sourceMappingURL=chunk-UT3GONA5.js.map

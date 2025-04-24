@@ -18,6 +18,14 @@ export class ComunidadesApiService {
     return this.http.get<any[]>(`${this.baseUrl}/comunidad`);
   }
 
+  getPostsByComunidadId(comunidadId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/publicacion/comunidad/${comunidadId}/posts`);
+  }
+  
+  getComunidadById(comunidadId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/comunidad/${comunidadId}`);
+  }
+
   // Método POST
   postData(endpoint: string, data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/${endpoint}`, data);
