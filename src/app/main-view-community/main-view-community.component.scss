@@ -13,13 +13,36 @@
     margin-right: 8px;
     color: #757575;
   }
+  .posts-section {
+    flex: 2;
+  }
   .post-card {
     margin-bottom: 16px;
   }
-
+  .post-votes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    margin-left: 16px;
+    mat-icon {
+      cursor: pointer;
+      &:hover {
+        color: var(--selected-color); 
+      }
+    }
+  }
+  .post-content {
+    display: flex;
+    align-items: flex-start;
+  }
+  .post-details {
+    flex: 1;
+  }
   .container-fluid {
     display: flex;
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
-    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
-    gap: 20px; /* Espaciado entre las secciones */
+    justify-content: space-between; 
+    align-items: flex-start;
+    gap: 20px; 
   }

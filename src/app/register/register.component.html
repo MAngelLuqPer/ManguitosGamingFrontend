@@ -93,7 +93,7 @@
     <mat-label>Visibilidad del perfil</mat-label>
     <mat-radio-group [(ngModel)]="visibility" name="visibility">
     <mat-radio-button  [value]="true">Público</mat-radio-button>
-    <mat-radio-button  [value]="false">Privado</mat-radio-button>
+    <mat-radio-button  [value]="true">Privado</mat-radio-button>
     </mat-radio-group>
 </div>
 <div *ngIf="registerError" class="text-danger">

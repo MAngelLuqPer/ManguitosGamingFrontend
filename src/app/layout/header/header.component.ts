@@ -25,10 +25,12 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const usuario = localStorage.getItem('usuario');
-    if (usuario) {
-      const usuarioObj = JSON.parse(usuario);
-      this.userName = usuarioObj.nombre || null;
+    if (typeof window !== 'undefined' && localStorage) {
+      const usuario = localStorage.getItem('usuario');
+      if (usuario) {
+        const usuarioObj = JSON.parse(usuario);
+        this.userName = usuarioObj.nombre || null;
+      }
     }
   }
 

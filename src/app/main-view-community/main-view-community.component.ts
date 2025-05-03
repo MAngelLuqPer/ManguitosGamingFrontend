@@ -4,22 +4,32 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ComunidadesApiService } from '../services/API/comunidades-api.service';
 import { CommonModule } from '@angular/common';
-import {  MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
 @Component({
   selector: 'app-main-view-community',
-  imports: [MatIconModule,MatCardModule,CommonModule],
+  imports: [MatButtonModule, MatIconModule, MatCardModule, CommonModule],
   templateUrl: './main-view-community.component.html',
   styleUrl: './main-view-community.component.scss'
 })
-export class MainViewCommunityComponent implements OnInit{
+export class MainViewCommunityComponent implements OnInit {
+  usuarioLogado: any = null; 
   comunidadId!: string;
-  comunidad:any;
+  comunidad: any;
   posts: any[] = [];
-constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService) {}
 
+  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService) {}
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined' && localStorage) {
+      const usuario = localStorage.getItem('usuario');
+      if (usuario) {
+        this.usuarioLogado = JSON.parse(usuario);
+      }
+    }
+
     this.route.paramMap.subscribe((params) => {
       this.comunidadId = params.get('id')!;
       this.loadComunidad();
