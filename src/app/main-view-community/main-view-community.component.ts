@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { PostsApiService } from '../services/API/posts-api.service';
 @Component({
   selector: 'app-main-view-community',
   imports: [MatButtonModule, MatIconModule, MatCardModule, CommonModule],
@@ -20,7 +20,7 @@ export class MainViewCommunityComponent implements OnInit {
   comunidad: any;
   posts: any[] = [];
 
-  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService) {}
+  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private PostApiService: PostsApiService) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
@@ -43,6 +43,11 @@ export class MainViewCommunityComponent implements OnInit {
         ...post,
         fechaPublicacion: post.fechaPublicacion.replace('[UTC]', ''), // Elimina el sufijo [UTC]
       }));
+      if (this.posts.length === 0) {
+        console.log('No se encontraron publicaciones para esta comunidad.');
+      }
+    }, error => {
+      console.error('Error al cargar las publicaciones:', error);
     });
   }
 
@@ -59,5 +64,20 @@ export class MainViewCommunityComponent implements OnInit {
         console.error('Error al cargar la comunidad:', error);
       },
     });
+  }
+
+  borrarPost(postId: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+      this.PostApiService.deleteData(postId).subscribe({
+        next: () => {
+          // Elimina el post localmente después de eliminarlo en el servidor
+          this.posts = this.posts.filter(post => post.id !== postId);
+          console.log(`Publicación con ID ${postId} eliminada.`);
+        },
+        error: (err) => {
+          console.error('Error al eliminar la publicación:', err);
+        }
+      });
+    }
   }
 }

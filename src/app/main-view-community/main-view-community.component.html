@@ -1,4 +1,15 @@
 <div class="container-fluid">
+    <div class="community-header" [style.backgroundImage]="'url(assets/images/MangoLogo.png)'">
+        <div class="community-header-content">
+            <img class="community-avatar" [src]="comunidad?.imagenAvatar || 'assets/images/MangoLogo.png'" alt="Avatar de la comunidad">
+            <span class="community-name">Publicaciones de m/{{ comunidad?.nombre }}</span>
+            <div class="community-actions">
+                <button mat-raised-button color="primary" >Crear publicación</button>
+                <button mat-raised-button color="accent" >Unirse</button>
+                <button mat-raised-button color="warn">Administrar</button>
+            </div>
+        </div>
+    </div>
     <div class="posts-section">
         <h2>Publicaciones de la comunidad {{ comunidadId }}</h2>
         <div *ngIf="posts.length > 0; else noPosts">
@@ -21,7 +32,7 @@
                                 <p>{{ post.contenido }}</p>
                             </mat-card-content>
                             <mat-card-actions *ngIf="comunidad?.idUsuAdmin == usuarioLogado?.id">
-                                <button mat-button color="warn">Borrar</button>
+                                <button mat-button color="warn" (click)="borrarPost(post.id)">Borrar</button>
                             </mat-card-actions>
                         </div>
                     </div>
