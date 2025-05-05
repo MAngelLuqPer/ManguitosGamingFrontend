@@ -16,16 +16,17 @@ import {
   VIRTUAL_SCROLL_STRATEGY,
   ViewportRuler,
   _fixedSizeVirtualScrollStrategyFactory
-} from "./chunk-O5SJ73AC.js";
-import "./chunk-FQ3E3KAD.js";
+} from "./chunk-USD5HJED.js";
+import "./chunk-W4YNAJYX.js";
 import "./chunk-LLSYBTIE.js";
+import "./chunk-IYX3446T.js";
 import {
   Dir
-} from "./chunk-3JXVEB6Q.js";
-import "./chunk-NV53Z7VJ.js";
-import "./chunk-NEKJXG77.js";
-import "./chunk-NHGK5J2F.js";
-import "./chunk-UVDT3Z7N.js";
+} from "./chunk-3HUHN6KM.js";
+import "./chunk-E2E4LRRJ.js";
+import "./chunk-ESCTLMY2.js";
+import "./chunk-5MAGJO76.js";
+import "./chunk-WDMUDEB6.js";
 export {
   CdkFixedSizeVirtualScroll,
   CdkScrollable,

@@ -9,10 +9,12 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { PostsApiService } from '../services/API/posts-api.service';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
-
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-create-publi-component',
-  imports: [ FormsModule,MatButton,MatInputModule,MatFormFieldModule,MatTabsModule],
+  imports: [ SweetAlert2Module,FormsModule,MatButton,MatInputModule,MatFormFieldModule,MatTabsModule],
   templateUrl: './create-publi-component.component.html',
   styleUrl: './create-publi-component.component.scss'
 })
@@ -24,7 +26,8 @@ export class CreatePubliComponentComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private postsApiService: PostsApiService
+    private postsApiService: PostsApiService,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -43,11 +46,16 @@ export class CreatePubliComponentComponent implements OnInit {
     }
   }
 
+  goBack(): void {
+    this.location.back(); // Navega a la página anterior
+  }
+
   onSubmit(): void {
     if (!this.usuarioId || !this.comunidadId) {
       console.error('Faltan datos: usuarioId o comunidadId no están definidos.');
       return;
     }
+    
 
     const publiDTO = {
       titulo: this.titulo,
@@ -59,11 +67,21 @@ export class CreatePubliComponentComponent implements OnInit {
     this.postsApiService.createPublicacion(publiDTO).subscribe({
       next: (response) => {
         console.log('Publicación creada con éxito:', response);
-        alert('Publicación creada con éxito.');
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'Publicación creada con éxito.',
+          confirmButtonText: 'Aceptar'
+        });
       },
       error: (error) => {
         console.error('Error al crear la publicación:', error);
-        alert('Ocurrió un error al crear la publicación.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al crear la publicación.',
+          confirmButtonText: 'Aceptar'
+        });
       }
     });
   }
