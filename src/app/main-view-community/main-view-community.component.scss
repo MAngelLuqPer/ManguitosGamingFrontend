@@ -1,45 +1,67 @@
-.community-info-card {
-    margin-bottom: 20px;
-    padding: 16px;
-    width: 440px;
-  }
-
-  .info-item {
+.main-view-community {
     display: flex;
-    margin-bottom: 8px;
-  }
-  
-  .info-item mat-icon {
-    margin-right: 8px;
-    color: #757575;
-  }
-  .posts-section {
+    gap: 16px;
+    padding: 16px;
+
+    .main-content {
+        flex: 3;
+    }
+
+    .community-info {
+        flex: 1;
+        max-width: 300px;
+    }
+
+    .community-info-card {
+        margin-bottom: 20px;
+        padding: 16px;
+        width: 100%;
+    }
+
+    .info-item {
+        display: flex;
+        margin-bottom: 8px;
+    }
+
+    .info-item mat-icon {
+        margin-right: 8px;
+        color: #757575;
+    }
+}
+
+.posts-section {
     flex: 2;
-  }
-  .post-card {
+}
+
+.post-card {
     margin-bottom: 16px;
-  }
-  .post-votes {
+}
+
+.post-votes {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 16px;
     margin-left: 16px;
+
     mat-icon {
-      cursor: pointer;
-      &:hover {
-        color: var(--selected-color); 
-      }
+        cursor: pointer;
+
+        &:hover {
+            color: var(--selected-color);
+        }
     }
-  }
-  .post-content {
+}
+
+.post-content {
     display: flex;
     align-items: flex-start;
-  }
-  .post-details {
+}
+
+.post-details {
     flex: 1;
-  }
+}
 
 .community-header {
     display: flex;
@@ -67,6 +89,10 @@
     .community-name {
         font-size: 1.5rem;
         font-weight: bold;
+        color: var(--text-color);
+        background-color: rgba(255, 255, 255, 0.342);
+        padding: 15px;
+        border-radius: 20px;
     }
 
     .community-actions {
