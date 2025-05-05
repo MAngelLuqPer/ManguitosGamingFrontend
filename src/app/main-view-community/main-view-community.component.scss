@@ -2,14 +2,17 @@
     display: flex;
     gap: 16px;
     padding: 16px;
+    flex-wrap: wrap; 
 
     .main-content {
         flex: 3;
+        min-width: 300px; 
     }
 
     .community-info {
         flex: 1;
         max-width: 300px;
+        min-width: 300px;
     }
 
     .community-info-card {
@@ -31,6 +34,7 @@
 
 .posts-section {
     flex: 2;
+    min-width: 300px;
 }
 
 .post-card {
@@ -57,6 +61,7 @@
 .post-content {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 .post-details {
@@ -72,11 +77,13 @@
     background-position: center;
     color: white;
     position: relative;
+    flex-wrap: wrap;
 
     .community-header-content {
         display: flex;
         align-items: center;
         gap: 16px;
+        flex: 1;
     }
 
     .community-avatar {
@@ -98,9 +105,43 @@
     .community-actions {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap; 
+        margin-left: auto; 
+        align-items: center;
 
         button {
             font-size: 0.9rem;
         }
+    }
+}
+
+@media (max-width: 1000px) {
+    .main-view-community {
+        flex-direction: column;
+    }
+
+    .community-info {
+        max-width: 100%;
+    }
+    .community-info-card {
+        width: 100%; 
+    }
+
+    .posts-section {
+        max-width: 100%; 
+    }
+
+    .community-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .community-header-content {
+        flex-direction: column; 
+        align-items: flex-start;
+    }
+
+    .community-actions {
+        justify-content: flex-start; 
     }
 }

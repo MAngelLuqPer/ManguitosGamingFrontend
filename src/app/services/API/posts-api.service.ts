@@ -12,6 +12,11 @@ export class PostsApiService {
     return this.http.get(`${this.baseUrl}/${endpoint}`);
   }
 
+  createPublicacion(publiDTO: { titulo: string; contenido: string; usuarioId: number; comunidadId: number }): Observable<any> {
+    const endpoint = 'publicacion';
+    return this.http.post(`${this.baseUrl}/${endpoint}`, publiDTO);
+  }
+  
   // getAllComunidades(): Observable<any[]> {
   //   return this.http.get<any[]>(`${this.baseUrl}/comunidad`);
   // }

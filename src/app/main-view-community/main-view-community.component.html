@@ -5,9 +5,9 @@
                 <img class="community-avatar" [src]="comunidad?.imagenAvatar || 'assets/images/MangoLogo.png'" alt="Avatar de la comunidad">
                 <span class="community-name">Publicaciones de m/{{ comunidad?.nombre }}</span>
                 <div class="community-actions">
-                    <button mat-raised-button color="primary">Crear publicación</button>
-                    <button mat-raised-button color="accent" >Unirse</button>
-                    <button mat-raised-button color="warn" >Administrar</button>
+                    <button mat-raised-button color="primary" [routerLink]="['/crear-publicacion', comunidad?.id]">Crear publicación</button>
+                    <button mat-raised-button color="accent">Unirse</button>
+                    <button mat-raised-button color="warn">Administrar</button>
                 </div>
             </div>
         </div>

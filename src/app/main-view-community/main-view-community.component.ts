@@ -8,9 +8,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { PostsApiService } from '../services/API/posts-api.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-main-view-community',
-  imports: [MatButtonModule, MatIconModule, MatCardModule, CommonModule],
+  imports: [RouterLink,MatButtonModule, MatIconModule, MatCardModule, CommonModule],
   templateUrl: './main-view-community.component.html',
   styleUrl: './main-view-community.component.scss'
 })

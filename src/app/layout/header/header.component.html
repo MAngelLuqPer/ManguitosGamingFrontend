@@ -1,37 +1,36 @@
-<header class=" py-2">
-<div class="container-fluid">
-<div class="d-flex flex-wrap align-items-center justify-content-between headerClass">
-    <div class="d-flex align-items-center mb-2 mb-lg-0">
-    <img src="../../assets/images/MangoLogo.png" alt="Logo" class="m-2">
-    <h3 class="mb-0">ManguitosGaming</h3>
-    </div>
-    <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-    <div class="d-flex align-items-center mb-2 mb-lg-0">
-        
-        <mat-slide-toggle
-        [checked]="lightDarkService.isDarkMode()"
-        (change)="toggleDarkMode()"
-        aria-label="Activar modo oscuro"
-        >
-        <mat-icon class="ml-8">brightness_5</mat-icon>
-        </mat-slide-toggle>
-        <mat-form-field>
-        <input matInput placeholder="Buscar comunidad o usuario">
-        <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
-    </div>
-        <div class="d-flex gap-2" >
-            <div mat-button [matMenuTriggerFor]="userDropdown" *ngIf="userName">
-                <span>¡Hola, {{ userName || 'Usuario' }}! &#9662;</span>
+<header class="py-2">
+    <div class="container-fluid">
+        <div class="d-flex flex-wrap align-items-center justify-content-between headerClass flex-column flex-lg-row text-center text-lg-start">
+            <div class="d-flex align-items-center mb-2 mb-lg-0 justify-content-center">
+                <img src="../../assets/images/MangoLogo.png" alt="Logo" class="m-2">
+                <h3 class="mb-0">ManguitosGaming</h3>
             </div>
-            <mat-menu #userDropdown="matMenu">
+            <div class="d-flex flex-column flex-lg-row align-items-center gap-2 justify-content-center">
+            <div class="d-flex align-items-center mb-2 mb-lg-0 justify-content-center">
+                <mat-slide-toggle
+                [checked]="lightDarkService.isDarkMode()"
+                (change)="toggleDarkMode()"
+                aria-label="Activar modo oscuro"
+                >
+                <mat-icon class="ml-8">brightness_5</mat-icon>
+                </mat-slide-toggle>
+                <mat-form-field>
+                <input matInput placeholder="Buscar comunidad o usuario">
+                <mat-icon matPrefix>search</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="d-flex gap-2 justify-content-center">
+                <div mat-button [matMenuTriggerFor]="userDropdown" *ngIf="userName">
+                <span>¡Hola, {{ userName || 'Usuario' }}! &#9662;</span>
+                </div>
+                <mat-menu #userDropdown="matMenu">
                 <button mat-menu-item (click)="logout()" *ngIf="userName">Cerrar sesión</button>
                 <button mat-menu-item>Administrar perfil</button>
-            </mat-menu>
-            <button class="rounded-5 custom-button" routerLink="/login" *ngIf="!userName">Iniciar sesión</button>
-            <button class="reg-btn rounded-5 p-2" routerLink="/register" *ngIf="!userName">Registrarse</button>
+                </mat-menu>
+                <button class="rounded-5 custom-button" routerLink="/login" *ngIf="!userName">Iniciar sesión</button>
+                <button class="reg-btn rounded-5 p-2" routerLink="/register" *ngIf="!userName">Registrarse</button>
+            </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
 </header>
