@@ -5,9 +5,10 @@
                 <img class="community-avatar" [src]="comunidad?.imagenAvatar || 'assets/images/MangoLogo.png'" alt="Avatar de la comunidad">
                 <span class="community-name">Publicaciones de m/{{ comunidad?.nombre }}</span>
                 <div class="community-actions">
-                    <button mat-raised-button color="primary" [routerLink]="['/crear-publicacion', comunidad?.id]">Crear publicación</button>
-                    <button mat-raised-button color="accent">Unirse</button>
-                    <button mat-raised-button color="warn">Administrar</button>
+                    <button mat-raised-button color="primary" *ngIf="usuarioLogado" [routerLink]="['/crear-publicacion', comunidad?.id]">Crear publicación</button>
+                    <button mat-raised-button color="accent"  (click)="joinComunidad()" *ngIf="usuarioLogado && !pertenece">Unirse</button>
+                    <button mat-raised-button color="warn" *ngIf="pertenece" (click)="abandonarComunidad()">Abandonar</button>
+                    <button mat-raised-button color="warn" *ngIf="usuarioLogado?.id === comunidad.idUsuAdmin">Administrar</button>
                 </div>
             </div>
         </div>

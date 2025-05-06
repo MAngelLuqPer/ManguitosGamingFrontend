@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { Router } from '@angular/router';
 import { UsuarioApiService } from '../services/API/usuario-api.service';
+import Swal from 'sweetalert2';
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -35,8 +37,6 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-
-
 
 export class RegisterComponent {
     visibility: boolean = true;
@@ -96,26 +96,43 @@ export class RegisterComponent {
       );
     }
 
-    register():void{
-      
+    register(): void {
       if (!this.isFormValid()) {
-        alert('Por favor, completa todos los campos correctamente.');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Formulario incompleto',
+          text: 'Por favor, completa todos los campos correctamente.',
+          confirmButtonText: 'Aceptar'
+        });
         return;
       }
+
       const nombre = this.nameFormControl.value!;
       const email = this.emailFormControl.value!;
       const password = this.passwordFormControl.value!;
       const descripcion = this.desc;
       const privacidad = this.visibility;
-  
+
       this.UsuarioApiService.register(nombre, email, descripcion, privacidad, password).subscribe({
         next: (response) => {
           console.log(response);
           this.registerSuccess = 'Usuario registrado con éxito.';
+          Swal.fire({
+            icon: 'success',
+            title: '¡Registro exitoso!',
+            text: 'El usuario ha sido registrado correctamente.',
+            confirmButtonText: 'Aceptar'
+          });
         },
         error: (error) => {
           this.registerError = 'Error al registrar el usuario. Por favor, inténtalo de nuevo.';
           console.error(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en el registro',
+            text: 'Ocurrió un error al registrar el usuario. Por favor, inténtalo de nuevo.',
+            confirmButtonText: 'Aceptar'
+          });
         },
       });
     }
