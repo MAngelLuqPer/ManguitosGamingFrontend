@@ -1,0 +1,50 @@
+<div class="create-community-container">
+<h2>Crear Comunidad</h2>
+<form (ngSubmit)="onSubmit()" #createCommunityForm="ngForm" class="form-layout">
+<!-- Subida de Banner -->
+<div class="banner-upload">
+    <label for="banner">Subir Banner</label>
+    <input type="file" id="banner" accept="image/*">
+</div>
+
+<!-- Subida de Logo -->
+<div class="logo-upload">
+    <label for="foto">Subir Logo</label>
+    <input type="file" id="foto" accept="image/*">
+</div>
+
+<!-- Nombre -->
+<mat-form-field appearance="fill" class="full-width">
+    <mat-label>Nombre</mat-label>
+    <input matInput type="text" name="nombre" [(ngModel)]="comunidad.nombre" required>
+</mat-form-field>
+
+<!-- Descripción -->
+<mat-form-field appearance="fill" class="full-width">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput name="desc" [(ngModel)]="comunidad.descripcion" rows="3" required></textarea>
+</mat-form-field>
+
+<!-- Reglas -->
+<div class="rules-section">
+    <label>Reglas</label>
+    <div *ngFor="let regla of comunidad.reglas; let i = index; trackBy: trackByIndex" class="rule-item">
+        <div class="rule-input-container">
+            <mat-form-field appearance="fill" class="rule-input">
+                <mat-label>Regla {{ i + 1 }}</mat-label>
+                <input matInput type="text" [(ngModel)]="comunidad.reglas[i]" name="regla{{ i }}" required>
+            </mat-form-field>
+            <button mat-icon-button color="warn" type="button" (click)="removeRegla(i)" [disabled]="comunidad.reglas.length === 1">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+    <button mat-raised-button color="accent" type="button" (click)="addRegla()">Añadir Regla</button>
+</div>
+<!-- Botones -->
+<div class="form-actions">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!createCommunityForm.valid">Crear Comunidad</button>
+    <button mat-raised-button color="warn" type="button">Cancelar</button>
+</div>
+</form>
+</div>

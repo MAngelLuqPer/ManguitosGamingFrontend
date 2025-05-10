@@ -61,4 +61,9 @@ export class ComunidadesApiService {
     const endpoint = `${this.baseUrl}/comunidad/${comunidadId}/salir/${usuarioId}`;
     return this.http.delete(endpoint);
   }
+
+  crearComunidad(comunidad: any): Observable<any> {
+    const endpoint = `${this.baseUrl}/comunidad`;
+    return this.http.post(endpoint, comunidad);
+  }
 }
