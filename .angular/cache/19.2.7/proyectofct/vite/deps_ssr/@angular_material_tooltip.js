@@ -2,7 +2,7 @@ import { createRequire } from 'module';const require = createRequire(import.meta
 import {
   Overlay,
   OverlayModule
-} from "./chunk-Y4NG2NFA.js";
+} from "./chunk-CBFLMMJV.js";
 import {
   ComponentPortal
 } from "./chunk-VUXGR3BG.js";
@@ -16,6 +16,7 @@ import {
   coerceBooleanProperty
 } from "./chunk-JBSAYOG6.js";
 import "./chunk-GCNNBS6H.js";
+import "./chunk-I3OFSDVX.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -26,7 +27,6 @@ import {
   normalizePassiveListenerOptions
 } from "./chunk-T62FDFKK.js";
 import "./chunk-HJTKKQ3X.js";
-import "./chunk-I3OFSDVX.js";
 import {
   Directionality
 } from "./chunk-4MBJBCPV.js";

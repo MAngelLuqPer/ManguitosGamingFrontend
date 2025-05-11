@@ -16,15 +16,15 @@ import {
   _isTestEnvironment
 } from "./chunk-GCNNBS6H.js";
 import {
+  supportsScrollBehavior
+} from "./chunk-I3OFSDVX.js";
+import {
   ESCAPE,
   _IdGenerator,
   _getEventTarget,
   coerceArray,
   hasModifierKey
 } from "./chunk-T62FDFKK.js";
-import {
-  supportsScrollBehavior
-} from "./chunk-I3OFSDVX.js";
 import {
   BidiModule,
   Directionality
@@ -2890,4 +2890,4 @@ export {
   Overlay,
   OverlayModule
 };
-//# sourceMappingURL=chunk-Y4NG2NFA.js.map
+//# sourceMappingURL=chunk-CBFLMMJV.js.map

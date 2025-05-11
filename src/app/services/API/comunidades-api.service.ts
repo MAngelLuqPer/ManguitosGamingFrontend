@@ -66,4 +66,8 @@ export class ComunidadesApiService {
     const endpoint = `${this.baseUrl}/comunidad`;
     return this.http.post(endpoint, comunidad);
   }
+
+  getIds(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/comunidad/ids`);
+  }
 }
