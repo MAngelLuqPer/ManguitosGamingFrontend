@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { get } from 'http';
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioApiService {
 
-  private baseUrl = 'http://localhost:8080/proyectofct/usuario';
+  private baseUrl = 'http://localhost:8080/proyectofct/api/usuario';
 
   constructor(private http: HttpClient) {}
 
@@ -25,5 +26,8 @@ export class UsuarioApiService {
   // Eliminar un usuario por ID
   deleteUsuario(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+  getUsuarioById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}`);
   }
 }

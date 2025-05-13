@@ -2,6 +2,10 @@
     <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-between headerClass flex-column flex-lg-row text-center text-lg-start">
             <div class="d-flex align-items-center mb-2 mb-lg-0 justify-content-center">
+                <button mat-icon-button (click)="onToggleSidebar()" class="mr-2">
+                    <mat-icon *ngIf="collapse" aria-hidden="false" aria-label="Abrir menú">menu</mat-icon>
+                    <mat-icon *ngIf="!collapse" aria-hidden="false" aria-label="Cerrar menú">close</mat-icon>
+                </button>
                 <img src="../../assets/images/MangoLogo.png" alt="Logo" class="m-2">
                 <h3 class="mb-0">ManguitosGaming</h3>
             </div>

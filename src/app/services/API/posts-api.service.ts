@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 })
 export class PostsApiService {
 
-  private baseUrl = 'http://localhost:8080/proyectofct';
+  private baseUrl = 'http://localhost:8080/proyectofct/api';
   constructor(private http: HttpClient) { }
   getData(endpoint: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${endpoint}`);
@@ -42,6 +42,10 @@ export class PostsApiService {
   // Método DELETE
   deleteData(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/publicacion/${id}`);
+  }
+
+  getById(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/publicacion/${id}`);
   }
   
 }

@@ -25,5 +25,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'login', // This renders the "/login" route on the server (SSR)
     renderMode: RenderMode.Server,
+  },
+  {
+    path: 'publicacion/:id', // This renders the "/publicacion/:id" route on the server (SSR)
+    renderMode: RenderMode.Server,
   }
 ];

@@ -10,5 +10,9 @@ import { MenuComponent } from '../menu/menu.component';
   styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent {
+  collapse: boolean = false;
 
+  toggleSidebar(): void {
+    this.collapse = !this.collapse;
+  }
 }

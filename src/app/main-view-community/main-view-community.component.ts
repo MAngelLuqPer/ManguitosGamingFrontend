@@ -10,9 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { PostsApiService } from '../services/API/posts-api.service';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { UsuarioApiService } from '../services/API/usuario-api.service';
+
 @Component({
   selector: 'app-main-view-community',
-  imports: [RouterLink,MatButtonModule, MatIconModule, MatCardModule, CommonModule],
+  imports: [RouterLink, MatButtonModule, MatIconModule, MatCardModule, CommonModule],
   templateUrl: './main-view-community.component.html',
   styleUrl: './main-view-community.component.scss'
 })
@@ -23,7 +25,7 @@ export class MainViewCommunityComponent implements OnInit {
   posts: any[] = [];
   pertenece: boolean | null = null;
 
-  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService,private router: Router,private PostApiService: PostsApiService) {}
+  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
@@ -42,16 +44,32 @@ export class MainViewCommunityComponent implements OnInit {
   }
 
   loadPosts(): void {
-    this.ComunidadesApiService.getPostsByComunidadId(this.comunidadId).subscribe((data) => {
-      this.posts = data.map((post) => ({
-        ...post,
-        fechaPublicacion: post.fechaPublicacion.replace('[UTC]', ''), // Elimina el sufijo [UTC]
-      }));
-      if (this.posts.length === 0) {
-        console.log('No se encontraron publicaciones para esta comunidad.');
-      }
-    }, error => {
-      console.error('Error al cargar las publicaciones:', error);
+    this.ComunidadesApiService.getPostsByComunidadId(this.comunidadId).subscribe({
+      next: (data) => {
+        this.posts = data.map((post) => ({
+          ...post,
+          fechaPublicacion: post.fechaPublicacion.replace('[UTC]', ''), // Elimina el sufijo [UTC]
+        }));
+
+        // Obtener el nombre del usuario para cada publicación
+        this.posts.forEach((post) => {
+          this.usuarioApiService.getUsuarioById(post.usuarioId).subscribe({
+            next: (usuario) => {
+              post.usuarioNombre = usuario.nombre; // Agregar el nombre del usuario a la publicación
+            },
+            error: (err) => {
+              console.error(`Error al cargar el usuario para la publicación con ID ${post.id}:`, err);
+            },
+          });
+        });
+
+        if (this.posts.length === 0) {
+          console.log('No se encontraron publicaciones para esta comunidad.');
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar las publicaciones:', error);
+      },
     });
   }
 
@@ -140,6 +158,7 @@ export class MainViewCommunityComponent implements OnInit {
       }
     });
   }
+
   abandonarComunidad(): void {
     if (!this.usuarioLogado || !this.comunidadId) {
       Swal.fire({

@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { ComunidadesApiService } from '../../services/API/comunidades-api.service';
 import { MenuItem } from './menu-list';
-
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -30,7 +30,7 @@ import { MenuItem } from './menu-list';
 })
 export class MenuComponent {
   sideMenu :MenuItem[] = [];;
-  collapse = false;
+  @Input() collapse: boolean = false;
   toggleSidebar() {
     this.collapse = !this.collapse;
   }

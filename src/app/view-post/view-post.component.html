@@ -1,0 +1,68 @@
+<div class="post">
+    <mat-card class="post-card" >
+        <div class="post-content">
+            <div class="post-votes">
+                <mat-icon>arrow_upward</mat-icon>
+                <span>{{ post.votos || 0 }}</span>
+                <mat-icon>arrow_downward</mat-icon>
+            </div>
+            <div class="post-details">
+                <mat-card-header>
+                    <mat-card-title>{{ post.titulo }}</mat-card-title>
+                    <mat-card-subtitle>
+                        Publicado por u/{{ usuarioNombre}}
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ post.contenido }}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button color="warn" >Reportar</button>
+                </mat-card-actions>
+            </div>
+        </div>
+    </mat-card>
+    <div class="comments-section">
+        <h3>Comentarios</h3>
+        <button mat-button (click)="toggleFormularioComentario()">Comentar</button>
+
+        <!-- Formulario de comentario -->
+        <div *ngIf="mostrarFormularioComentario" class="comentario-formulario">
+            <mat-form-field appearance="outline" class="full-width">
+                <textarea
+                    matInput
+                    placeholder="Escribe tu comentario..."
+                    #comentarioInput
+                    rows="3"
+                ></textarea>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="publicarComentario(comentarioInput.value)">
+                Publicar
+            </button>
+        </div>
+
+        <!-- Lista de comentarios -->
+        <div *ngIf="comentarios.length > 0; else noComments">
+            <div *ngFor="let comentario of comentarios" class="comment">
+                <mat-card class="comment-card mb-4">
+                    <mat-card-header>
+                        <div mat-card-avatar class="avatar-container">
+                            <img [src]="comentario.usuarioAvatar || 'assets/images/MangoLogo.png'" alt="Avatar del usuario" />
+                        </div>
+                        <mat-card-title>{{ comentario.usuarioNombre }}</mat-card-title>
+                        <mat-card-subtitle>Publicado el {{ comentario.fechaComentario | date: 'short' }}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>{{ comentario.contenido }}</p>
+                    </mat-card-content>
+                    <div class="comment-actions m-3">
+                        <button mat-button color="warn" *ngIf="comentario.usuarioId === usuarioId"  (click)="borrarComentario(comentario.id)">Borrar</button>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+        <ng-template #noComments>
+            <p>No hay comentarios disponibles.</p>
+        </ng-template>
+    </div>
+</div>

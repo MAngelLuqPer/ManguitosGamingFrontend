@@ -11,6 +11,7 @@ import { LightDarkService } from '../../services/light-dark.service';
 import { OnInit } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
 import { NgIf } from '@angular/common';
+import { Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-header',
   imports: [ NgIf,MatMenu,MatMenuModule,RouterModule,MatInputModule, MatIconModule,MatButtonModule,MatSlideToggleModule,RouterLink,FormsModule],
@@ -18,6 +19,12 @@ import { NgIf } from '@angular/common';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
+  @Input() collapse: boolean = false; // Recibe el estado del menú desde el componente padre
+  @Output() toggleSidebar = new EventEmitter<void>(); // Emite el evento para alternar el estado
+
+  onToggleSidebar(): void {
+    this.toggleSidebar.emit(); // Emite el evento al componente padre
+  }
   userName: string | null = null;
   constructor(public lightDarkService: LightDarkService) {}
   toggleDarkMode(): void {

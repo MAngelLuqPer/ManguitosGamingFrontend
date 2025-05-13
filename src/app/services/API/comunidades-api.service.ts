@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http'; // Importar HttpClientM
 })
 export class ComunidadesApiService {
 
-  private baseUrl = 'http://localhost:8080/proyectofct';
+  private baseUrl = 'http://localhost:8080/proyectofct/api';
   constructor(private http: HttpClient) { }
   getData(endpoint: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${endpoint}`);

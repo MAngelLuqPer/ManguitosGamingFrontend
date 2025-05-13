@@ -6,11 +6,13 @@ import { MainViewCommunityComponent } from './main-view-community/main-view-comm
 import { CreatePubliComponentComponent } from './create-publi-component/create-publi-component.component';
 import { CreateCommunityComponent } from './create-community/create-community.component';
 import { RenderMode, ServerRoute } from '@angular/ssr';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 export const routes: Routes = [ {path:'', component: MainLayoutComponent,
     children: [{ path: 'comunidad/:id', component: MainViewCommunityComponent },
         {path: 'crear-publicacion/:id', component: CreatePubliComponentComponent,},
-        {path: 'crear-comunidad', component: CreateCommunityComponent}
+        {path: 'crear-comunidad', component: CreateCommunityComponent},
+        {path: 'publicacion/:id', component: ViewPostComponent},
     ]},
 {path:'register', component:RegisterComponent},
 {path:'login', component:LoginComponent},
