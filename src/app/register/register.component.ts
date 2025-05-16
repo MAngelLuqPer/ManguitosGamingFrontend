@@ -132,6 +132,8 @@ export class RegisterComponent {
             title: 'Error en el registro',
             text: 'Ocurrió un error al registrar el usuario. Por favor, inténtalo de nuevo.',
             confirmButtonText: 'Aceptar'
+          }).then(() => {
+            this.Router.navigate(['/login']);
           });
         },
       });

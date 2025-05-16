@@ -11,7 +11,7 @@ import { PostsApiService } from '../services/API/posts-api.service';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UsuarioApiService } from '../services/API/usuario-api.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-main-view-community',
   imports: [RouterLink, MatButtonModule, MatIconModule, MatCardModule, CommonModule],
@@ -25,7 +25,7 @@ export class MainViewCommunityComponent implements OnInit {
   posts: any[] = [];
   pertenece: boolean | null = null;
 
-  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService) {}
+  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
@@ -48,8 +48,11 @@ export class MainViewCommunityComponent implements OnInit {
       next: (data) => {
         this.posts = data.map((post) => ({
           ...post,
-          fechaPublicacion: post.fechaPublicacion.replace('[UTC]', ''), // Elimina el sufijo [UTC]
+          fechaPublicacion: new Date(post.fechaPublicacion.replace('[UTC]', '')), // Convertir a objeto Date
         }));
+
+        // Ordenar las publicaciones de más reciente a menos reciente
+        this.posts.sort((a, b) => b.fechaPublicacion.getTime() - a.fechaPublicacion.getTime());
 
         // Obtener el nombre del usuario para cada publicación
         this.posts.forEach((post) => {
@@ -106,19 +109,32 @@ export class MainViewCommunityComponent implements OnInit {
     });
   }
 
-  borrarPost(postId: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
-      this.PostApiService.deleteData(postId).subscribe({
-        next: () => {
-          // Elimina el post localmente después de eliminarlo en el servidor
-          this.posts = this.posts.filter(post => post.id !== postId);
-          console.log(`Publicación con ID ${postId} eliminada.`);
-        },
-        error: (err) => {
-          console.error('Error al eliminar la publicación:', err);
+  borrarPost(postId: number, event: Event): void {
+    event.stopPropagation(); // Detener la propagación del evento de clic
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción eliminará la publicación de forma permanente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            this.PostApiService.deleteData(postId).subscribe({
+                next: () => {
+                    this.snackBar.open('Publicación eliminada con éxito.', 'Cerrar', { duration: 3000 });
+                    this.loadPosts(); // Recargar las publicaciones después de eliminar
+                },
+                error: (err) => {
+                    console.error('Error al eliminar la publicación:', err);
+                    this.snackBar.open('Hubo un problema al eliminar la publicación.', 'Cerrar', { duration: 3000 });
+                },
+            });
         }
-      });
-    }
+    });
   }
 
   joinComunidad(): void {

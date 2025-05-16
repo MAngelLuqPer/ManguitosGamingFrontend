@@ -58,3 +58,24 @@ textarea {
 .comment{
     margin-left: 60px;
 }
+
+.respuestas{
+    margin-left: 20px;
+}
+.respuesta-lista{
+    margin-left: 25px;
+}
+
+.back-button {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+
+    button {
+        background-color: none;
+        border: 1px solid black;
+        cursor: pointer;
+    } :hover {
+        background-color: var(--hover-color);
+    }
+}

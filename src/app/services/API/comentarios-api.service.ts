@@ -21,4 +21,11 @@ export class ComentariosApiService {
   deleteComentario(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/comentarios/${id}`);
   }
+
+  responderComentario(comentarioDTO: { contenido: string; usuarioId: number; publicacionId: number; comentarioPadreId?: number }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/comentarios/responder`, comentarioDTO);
+  }
+  getRespuestasByComentarioId(comentarioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/comentarios/respuestas/${comentarioId}`);
+}
 }

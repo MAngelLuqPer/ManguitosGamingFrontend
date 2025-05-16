@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import  {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-view-post',
@@ -29,7 +30,9 @@ export class ViewPostComponent implements OnInit {
     private route: ActivatedRoute,
     private postsApiService: PostsApiService,
     private usuarioApiService: UsuarioApiService,
-    private comentariosApiService: ComentariosApiService
+    private comentariosApiService: ComentariosApiService,
+    private snackBar: MatSnackBar // Agregar MatSnackBar al constructor
+
   ) {}
 
   ngOnInit(): void {
@@ -72,33 +75,59 @@ export class ViewPostComponent implements OnInit {
 
   private cargarComentarios(): void {
     if (!this.postId) {
-      console.error('No se encontró el ID de la publicación.');
-      return;
+        console.error('No se encontró el ID de la publicación.');
+        return;
     }
 
     this.comentariosApiService.getComentariosByPostId(this.postId).subscribe({
-      next: (comentarios) => {
-        this.comentarios = comentarios.map((comentario) => {
-          // Convertir la fecha a un objeto Date válido
-          comentario.fechaComentario = new Date(comentario.fechaComentario.replace('[UTC]', ''));
-          return comentario;
-        });
+        next: (comentarios) => {
+            // Filtrar comentarios principales y respuestas
+            const comentariosPrincipales = comentarios.filter(c => !c.comentarioPadreId);
+            const respuestas = comentarios.filter(c => c.comentarioPadreId);
 
-        // Cargar los datos de los usuarios de cada comentario
-        this.comentarios.forEach((comentario) => {
-          this.usuarioApiService.getUsuarioById(comentario.usuarioId).subscribe({
-            next: (usuario) => {
-              comentario.usuarioNombre = usuario.nombre;
-            },
-            error: (err) => {
-              console.error('Error al cargar el usuario del comentario:', err);
-            },
-          });
-        });
-      },
-      error: (err) => {
-        console.error('Error al cargar los comentarios:', err);
-      },
+            // Mapear comentarios principales
+            this.comentarios = comentariosPrincipales.map((comentario) => {
+                comentario.fechaComentario = new Date(comentario.fechaComentario.replace('[UTC]', ''));
+                comentario.respuestas = []; // Inicializar el array de respuestas
+                return comentario;
+            });
+
+            // Asociar respuestas a sus comentarios principales
+            respuestas.forEach((respuesta) => {
+                const comentarioPadre = this.comentarios.find(c => c.id === respuesta.comentarioPadreId);
+                if (comentarioPadre) {
+                    respuesta.fechaComentario = new Date(respuesta.fechaComentario.replace('[UTC]', ''));
+                    comentarioPadre.respuestas.push(respuesta);
+                }
+            });
+
+            // Cargar los datos de los usuarios para los comentarios principales
+            this.comentarios.forEach((comentario) => {
+                this.usuarioApiService.getUsuarioById(comentario.usuarioId).subscribe({
+                    next: (usuario) => {
+                        comentario.usuarioNombre = usuario.nombre;
+                    },
+                    error: (err) => {
+                        console.error('Error al cargar el usuario del comentario:', err);
+                    },
+                });
+
+                // Cargar los datos de los usuarios para las respuestas
+                comentario.respuestas.forEach((respuesta:any) => {
+                    this.usuarioApiService.getUsuarioById(respuesta.usuarioId).subscribe({
+                        next: (usuario) => {
+                            respuesta.usuarioNombre = usuario.nombre;
+                        },
+                        error: (err) => {
+                            console.error('Error al cargar el usuario de la respuesta:', err);
+                        },
+                    });
+                });
+            });
+        },
+        error: (err) => {
+            console.error('Error al cargar los comentarios:', err);
+        },
     });
   }
 
@@ -110,68 +139,98 @@ export class ViewPostComponent implements OnInit {
   // Método para manejar la publicación del comentario
   publicarComentario(contenido: string): void {
     if (!contenido.trim()) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'El comentario no puede estar vacío.',
-      });
-      return;
-    }
-
-// Obtener el ID del usuario desde localStorage
-    const usuario = localStorage.getItem('usuario');
-    if (!usuario) {
-      console.error('No se encontró información del usuario en localStorage.');
+      this.snackBar.open('El comentario no puede estar vacío.', 'Cerrar', { duration: 3000 });
       return;
     }
 
     if (this.usuarioId === null) {
-      console.error('El usuarioId no puede ser null.');
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se pudo publicar el comentario porque no se encontró el usuario.',
-      });
+      this.snackBar.open('No se encontró información del usuario. No puedes comentar.', 'Cerrar', { duration: 3000 });
       return;
     }
 
     const nuevoComentario = {
       contenido,
-      usuarioId: this.usuarioId, // Usar el ID del usuario global
+      usuarioId: this.usuarioId,
       publicacionId: this.postId!,
     };
 
     this.comentariosApiService.createComentario(nuevoComentario).subscribe({
       next: (response) => {
-        console.log('Comentario creado:', response);
+        this.snackBar.open('Comentario publicado con éxito.', 'Cerrar', { duration: 3000 });
         this.cargarComentarios();
-        this.mostrarFormularioComentario = false; // Ocultar el formulario
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Comentario publicado',
-          text: 'Tu comentario ha sido publicado con éxito.',
-        });
+        this.mostrarFormularioComentario = false;
       },
       error: (err) => {
         console.error('Error al crear el comentario:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Hubo un problema al publicar tu comentario.',
-        });
+        this.snackBar.open('Hubo un problema al publicar tu comentario.', 'Cerrar', { duration: 3000 });
       },
     });
   }
 
   borrarComentario(comentarioId: number): void {
-    this.comentariosApiService.deleteComentario(comentarioId).subscribe({
-      next: (response) => {
-        console.log('Comentario borrado:', response);
-        this.comentarios = this.comentarios.filter((comentario) => comentario.id !== comentarioId);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará el comentario de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.comentariosApiService.deleteComentario(comentarioId).subscribe({
+          next: (response) => {
+            console.log('Comentario borrado:', response);
+            this.snackBar.open('El comentario se ha borrado correctamente.', 'Cerrar', { duration: 3000 });
+            this.cargarComentarios(); // Recargar los comentarios después de borrar
+          },
+          error: (err) => {
+            console.error('Error al borrar el comentario:', err);
+            this.snackBar.open('Hubo un problema al borrar el comentario.', 'Cerrar', { duration: 3000 });
+          },
+        });
+      }
+    });
+  }
+
+  toggleResponder(comentarioId: number): void {
+    const comentario = this.comentarios.find(c => c.id === comentarioId);
+    if (comentario) {
+      comentario.mostrarResponder = !comentario.mostrarResponder;
+    }
+  }
+
+  volver(): void {
+    history.back();
+  }
+
+  publicarRespuesta(comentarioId: number, contenido: string): void {
+    if (!contenido.trim()) {
+      this.snackBar.open('La respuesta no puede estar vacía.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    if (this.usuarioId === null) {
+      this.snackBar.open('No se encontró información del usuario. No puedes responder.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    const nuevaRespuesta = {
+      contenido,
+      usuarioId: this.usuarioId,
+      publicacionId: this.postId!,
+      comentarioPadreId: comentarioId,
+    };
+
+    this.comentariosApiService.responderComentario(nuevaRespuesta).subscribe({
+      next: () => {
+        this.snackBar.open('Respuesta publicada con éxito.', 'Cerrar', { duration: 3000 });
+        this.cargarComentarios();
       },
       error: (err) => {
-        console.error('Error al borrar el comentario:', err);
+        console.error('Error al publicar la respuesta:', err);
+        this.snackBar.open('Hubo un problema al publicar tu respuesta.', 'Cerrar', { duration: 3000 });
       },
     });
   }

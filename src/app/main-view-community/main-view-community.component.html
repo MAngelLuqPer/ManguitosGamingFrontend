@@ -37,7 +37,7 @@
                                     <p>{{ post.contenido }}</p>
                                 </mat-card-content>
                                 <mat-card-actions *ngIf="comunidad?.idUsuAdmin == usuarioLogado?.id">
-                                    <button mat-button color="warn" (click)="borrarPost(post.id)">Borrar</button>
+                                    <button mat-button color="warn" (click)="borrarPost(post.id, $event)">Borrar</button>
                                 </mat-card-actions>
                             </div>
                         </div>
