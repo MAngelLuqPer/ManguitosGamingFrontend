@@ -22,14 +22,14 @@
                     <p>{{ post.contenido }}</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-button color="warn" >Reportar</button>
+                    <button mat-button color="warn" *ngIf="usuarioId">Reportar</button>
                 </mat-card-actions>
             </div>
         </div>
     </mat-card>
     <div class="comments-section">
         <h3>Comentarios</h3>
-        <button mat-button (click)="toggleFormularioComentario()">
+        <button mat-button *ngIf="usuarioId" (click)="toggleFormularioComentario()">
             {{ mostrarFormularioComentario ? 'Cancelar' : 'Comentar' }}
         </button>
 
@@ -63,7 +63,7 @@
                         <p>{{ comentario.contenido }}</p>
                     </mat-card-content>
                     <div class="comment-actions m-3">
-                        <button mat-button color="primary" (click)="toggleResponder(comentario.id)">
+                        <button mat-button color="primary" *ngIf="usuarioId" (click)="toggleResponder(comentario.id)">
                             {{ comentario.mostrarResponder ? 'Cancelar respuesta' : 'Responder' }}
                         </button>
                         <button mat-button color="warn" *ngIf="comentario.usuarioId === usuarioId" (click)="borrarComentario(comentario.id)">
@@ -87,7 +87,7 @@
                     </div>
 
                     <!-- Lista de respuestas -->
-                    <div *ngIf="comentario.respuestas && comentario.respuestas.length > 0" class="respuestas">
+                    <div *ngIf="comentario.respuestas && comentario.respuestas.length > 0" class="respuestas mb-3">
                         <button mat-button color="primary" (click)="comentario.mostrarRespuestas = !comentario.mostrarRespuestas">
                             {{ comentario.mostrarRespuestas ? 'Ocultar respuestas' : 'Ver respuestas' }}
                         </button>

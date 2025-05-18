@@ -1,18 +1,40 @@
 <mat-tab-group>
     <mat-tab label="Texto">
-        <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onSubmit()" #publiForm="ngForm">
+            <!-- Campo de título -->
             <mat-form-field appearance="fill">
                 <mat-label>Título</mat-label>
-                <input matInput type="text" name="titulo" [(ngModel)]="titulo" required>
+                <input 
+                    matInput 
+                    type="text" 
+                    name="titulo" 
+                    [(ngModel)]="titulo" 
+                    required 
+                    #tituloInput="ngModel">
+                <mat-error *ngIf="tituloInput.invalid && tituloInput.touched">
+                    El título es obligatorio.
+                </mat-error>
             </mat-form-field>
             
+            <!-- Campo de descripción -->
             <mat-form-field appearance="fill">
                 <mat-label>Descripción</mat-label>
-                <textarea matInput name="descripcion" [(ngModel)]="descripcion" rows="5" required></textarea>
+                <textarea 
+                    matInput 
+                    name="descripcion" 
+                    [(ngModel)]="descripcion" 
+                    rows="5" 
+                    required 
+                    #descripcionInput="ngModel">
+                </textarea>
+                <mat-error *ngIf="descripcionInput.invalid && descripcionInput.touched">
+                    La descripción es obligatoria.
+                </mat-error>
             </mat-form-field>
             
-            <button mat-button color="primary" type="submit">Enviar</button>
-            <button mat-button  type="button" (click)="goBack()">Volver</button>
+            <!-- Botones -->
+            <button mat-button color="primary" type="submit" [disabled]="publiForm.invalid">Enviar</button>
+            <button mat-button type="button" (click)="goBack()">Volver</button>
         </form>
     </mat-tab>
     <mat-tab label="Contenido multimedia"> Content 2 </mat-tab>

@@ -10,11 +10,12 @@ import { ActivatedRoute } from '@angular/router';
 import { PostsApiService } from '../services/API/posts-api.service';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
 @Component({
   selector: 'app-create-publi-component',
-  imports: [ SweetAlert2Module,FormsModule,MatButton,MatInputModule,MatFormFieldModule,MatTabsModule],
+  imports: [ CommonModule,SweetAlert2Module,FormsModule,MatButton,MatInputModule,MatFormFieldModule,MatTabsModule],
   templateUrl: './create-publi-component.component.html',
   styleUrl: './create-publi-component.component.scss'
 })

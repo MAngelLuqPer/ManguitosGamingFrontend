@@ -7,14 +7,30 @@ import { CreatePubliComponentComponent } from './create-publi-component/create-p
 import { CreateCommunityComponent } from './create-community/create-community.component';
 import { RenderMode, ServerRoute } from '@angular/ssr';
 import { ViewPostComponent } from './view-post/view-post.component';
+import { authGuard } from './guards/auth.guard';
+import { AdminCommunityComponent } from './admin-community/admin-community.component';
+import { isAdminGuard } from './guards/is-admin.guard';
 
-export const routes: Routes = [ {path:'', component: MainLayoutComponent,
-    children: [{ path: 'comunidad/:id', component: MainViewCommunityComponent },
-        {path: 'crear-publicacion/:id', component: CreatePubliComponentComponent,},
-        {path: 'crear-comunidad', component: CreateCommunityComponent},
-        {path: 'publicacion/:id', component: ViewPostComponent},
-    ]},
-{path:'register', component:RegisterComponent},
-{path:'login', component:LoginComponent},
-
+export const routes: Routes = [
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      { path: 'comunidad/:id', component: MainViewCommunityComponent },
+      {
+        path: 'crear-publicacion/:id',
+        component: CreatePubliComponentComponent,
+        canActivate: [authGuard], // Proteger la ruta con el guard
+      },
+      {
+        path: 'crear-comunidad',
+        component: CreateCommunityComponent,
+        canActivate: [authGuard], // Proteger la ruta con el guard
+      },
+      { path: 'publicacion/:id', component: ViewPostComponent },
+      { path: 'administrar-comunidad/:id', component: AdminCommunityComponent, canActivate: [isAdminGuard] },
+    ],
+  },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
 ];

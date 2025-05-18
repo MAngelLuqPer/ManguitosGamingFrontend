@@ -12,6 +12,7 @@ import { OnInit } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
 import { NgIf } from '@angular/common';
 import { Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   imports: [ NgIf,MatMenu,MatMenuModule,RouterModule,MatInputModule, MatIconModule,MatButtonModule,MatSlideToggleModule,RouterLink,FormsModule],
@@ -26,7 +27,7 @@ export class HeaderComponent implements OnInit {
     this.toggleSidebar.emit(); // Emite el evento al componente padre
   }
   userName: string | null = null;
-  constructor(public lightDarkService: LightDarkService) {}
+  constructor(public lightDarkService: LightDarkService,private Router: Router) {}
   toggleDarkMode(): void {
     this.lightDarkService.toggleDarkMode();
   }
@@ -44,6 +45,7 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     localStorage.removeItem('usuario');
     this.userName = null;
+    this.Router.navigate(['/']);
   }
 
 }
