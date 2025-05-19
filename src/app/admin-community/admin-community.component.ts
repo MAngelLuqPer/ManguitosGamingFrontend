@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { KickUserComponent } from './modals/kick-user/kick-user.component';
 @Component({
   selector: 'app-admin-community',
   templateUrl: './admin-community.component.html',
@@ -23,7 +25,8 @@ export class AdminCommunityComponent implements OnInit {
 
   constructor(
     private comunidadesApiService: ComunidadesApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog // Inyectar MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -48,14 +51,25 @@ export class AdminCommunityComponent implements OnInit {
     });
   }
 
-  expulsarUsuario(usuarioId: number): void {
-    this.comunidadesApiService.abandonarComunidad(usuarioId, this.comunidadId).subscribe({
-      next: () => {
-        this.usuarios.data = this.usuarios.data.filter((usuario) => usuario.id !== usuarioId);
-      },
-      error: (error) => {
-        console.error('Error al expulsar al usuario:', error);
-      },
+  expulsarUsuario(usuario: any): void {
+    const idUsuAdmin = parseInt(this.route.snapshot.queryParamMap.get('idUsuAdmin') || '0');
+    const dialogRef = this.dialog.open(KickUserComponent, {
+      width: '400px',
+      data: {
+        comunidadId: this.comunidadId,
+        nombre: usuario.nombre,
+        usuarioId: usuario.id, // Pasar el ID del usuario al modal
+        adminId: idUsuAdmin // Pasar el ID del administrador al modal
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Motivo:', result.motivo);
+        console.log('Fecha de expulsión:', result.fecha);
+        console.log('ID del usuario expulsado:', usuario.id);
+        this.cargarUsuarios();
+      }
     });
   }
 }

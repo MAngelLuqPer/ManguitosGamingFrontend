@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {  HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http'; // Importar HttpClientModule
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComunidadesApiService {
 
-  private baseUrl = 'http://localhost:8080/proyectofct/api';
+  private baseUrl = environment.baseUrl;
   constructor(private http: HttpClient) { }
   getData(endpoint: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/${endpoint}`);
@@ -73,5 +74,10 @@ export class ComunidadesApiService {
   getUsuariosDeComunidad(comunidadId: number): Observable<any[]> {
     const endpoint = `${this.baseUrl}/comunidad/${comunidadId}/usuarios`;
     return this.http.get<any[]>(endpoint);
+  }
+
+  expulsarUsuario(comunidadId: number, expulsionDTO: { usuarioId: number; adminId: number; razon: string; fechaFin: string }): Observable<any> {
+    const endpoint = `${this.baseUrl}/comunidad/${comunidadId}/expulsar`;
+    return this.http.post(endpoint, expulsionDTO);
   }
 }

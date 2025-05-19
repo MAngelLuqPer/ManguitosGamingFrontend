@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Expulsar a {{ data.nombre }}</h2>
+<mat-dialog-content>
+  <p>Por favor, proporciona un motivo para la expulsión y selecciona una fecha.</p>
+
+  <!-- Motivo -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Motivo</mat-label>
+    <textarea matInput [(ngModel)]="motivo" rows="3" placeholder="Escribe el motivo"></textarea>
+  </mat-form-field>
+
+  <!-- Fecha -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Fecha de expulsión</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="fechaExpulsion" [min]="minDate" placeholder="Selecciona una fecha">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-raised-button (click)="onExpulsar()" color="warn" [mat-dialog-close]="{ motivo: motivo, fecha: fechaExpulsion }" [disabled]="!motivo || !fechaExpulsion">
+    Expulsar
+  </button>
+</mat-dialog-actions>
