@@ -12,6 +12,10 @@ import { FormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportPostComponent } from '../main-view-community/modals/report-post/report-post.component';
+import { ReportesApiService } from '../services/API/reportes-api.service';
+
 @Component({
   selector: 'app-view-post',
   imports: [MatFormFieldModule,FormsModule,MatInputModule,MatButtonModule, MatIconModule, CommonModule, MatCardModule],
@@ -31,8 +35,9 @@ export class ViewPostComponent implements OnInit {
     private postsApiService: PostsApiService,
     private usuarioApiService: UsuarioApiService,
     private comentariosApiService: ComentariosApiService,
-    private snackBar: MatSnackBar // Agregar MatSnackBar al constructor
-
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog, // Inyectar MatDialog
+    private reportesApiService: ReportesApiService // Inyectar ReportesApiService
   ) {}
 
   ngOnInit(): void {
@@ -232,6 +237,37 @@ export class ViewPostComponent implements OnInit {
         console.error('Error al publicar la respuesta:', err);
         this.snackBar.open('Hubo un problema al publicar tu respuesta.', 'Cerrar', { duration: 3000 });
       },
+    });
+  }
+
+  abrirModalReporte(): void {
+    if (!this.usuarioId || !this.postId) {
+      this.snackBar.open('No se puede reportar esta publicación.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ReportPostComponent, {
+      width: '400px',
+      data: {
+        usuarioId: this.usuarioId,
+        publicacionId: this.postId,
+        comunidadId: this.post?.comunidadId // Asegúrate de que `comunidadId` esté disponible en el objeto `post`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Datos del reporte:', result);
+        this.reportesApiService.createReporte(result).subscribe({
+          next: () => {
+            this.snackBar.open('El reporte ha sido enviado.', 'Cerrar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Error al enviar el reporte:', error);
+            this.snackBar.open('Hubo un error al enviar el reporte.', 'Cerrar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
 }

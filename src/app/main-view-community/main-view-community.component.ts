@@ -192,17 +192,19 @@ export class MainViewCommunityComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Datos del reporte:', result);
-        // Aquí puedes llamar al servicio para enviar el reporte al backend
+        // Llamar al servicio para enviar el reporte al backend
         this.reportesApiService.createReporte(result).subscribe({
           next: () => {
             console.log('Reporte enviado correctamente');
-            alert('El reporte ha sido enviado.');
+            this.snackBar.open('El reporte ha sido enviado con éxito.', 'Cerrar', { duration: 3000 });
           },
           error: (error) => {
             console.error('Error al enviar el reporte:', error);
-            alert('Hubo un error al enviar el reporte.');
+            this.snackBar.open('Hubo un error al enviar el reporte. Inténtalo de nuevo.', 'Cerrar', { duration: 3000 });
           }
         });
+      } else {
+        this.snackBar.open('El reporte fue cancelado.', 'Cerrar', { duration: 3000 });
       }
     });
   }

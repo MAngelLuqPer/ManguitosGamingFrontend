@@ -22,7 +22,7 @@
                     <p>{{ post.contenido }}</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-button color="warn" *ngIf="usuarioId">Reportar</button>
+                    <button mat-button color="warn" *ngIf="usuarioId" (click)="abrirModalReporte()">Reportar</button>
                 </mat-card-actions>
             </div>
         </div>

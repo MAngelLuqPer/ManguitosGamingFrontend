@@ -7,7 +7,7 @@
     <input matInput (keyup)="aplicarFiltro($event)" placeholder="Escribe un nombre">
   </mat-form-field>
 
-  <table mat-table [dataSource]="usuarios" matSort class="mat-elevation-z8" *ngIf="usuarios.data.length > 0; else noUsuarios">
+  <table mat-table [dataSource]="usuarios" class="mat-elevation-z8" *ngIf="usuarios.data.length > 0; else noUsuarios">
     <!-- Columna Nombre -->
     <ng-container matColumnDef="nombre">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
@@ -32,10 +32,47 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator #usuariosPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
   <ng-template #noUsuarios>
     <p>No hay usuarios en esta comunidad.</p>
   </ng-template>
+
+  <!-- Nueva tabla de reportes -->
+  <h2>Reportes de la comunidad</h2>
+
+  <table mat-table [dataSource]="reportes" class="mat-elevation-z8" *ngIf="reportes.data.length > 0; else noReportes">
+    <!-- Columna Fecha -->
+    <ng-container matColumnDef="fecha">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+      <td mat-cell *matCellDef="let reporte"> {{ reporte.fechaReporte | date: 'short' }} </td>
+    </ng-container>
+
+    <!-- Columna Motivo -->
+    <ng-container matColumnDef="motivo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Motivo </th>
+      <td mat-cell *matCellDef="let reporte"> {{ reporte.motivo }} </td>
+    </ng-container>
+
+    <!-- Columna Acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let reporte">
+        <button mat-raised-button color="warn">Borrar reporte</button>
+        <button mat-raised-button color="accent" (click)="borrarPublicacion(reporte.publicacionId)">Borrar publicacion</button>
+        <button mat-raised-button color="primary" [routerLink]="['/publicacion', reporte.publicacionId]" *ngIf="reporte.publicacionId">Ver publicación</button>
+      </td>
+    </ng-container>
+
+    <!-- Encabezado y filas -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsReportes"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsReportes;"></tr>
+  </table>
+  <mat-paginator #reportesPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+  <ng-template #noReportes>
+    <p>No hay reportes disponibles para esta comunidad.</p>
+  </ng-template>
+
+
 </div>

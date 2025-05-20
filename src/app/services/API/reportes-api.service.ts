@@ -16,4 +16,8 @@ export class ReportesApiService {
     const endpoint = `${this.baseUrl}/reportes`;
     return this.http.post(endpoint, reporteDTO);
   }
+  getReportesPorComunidad(comunidadId: number): Observable<any[]> {
+    const endpoint = `${this.baseUrl}/reportes/comunidad/${comunidadId}`;
+    return this.http.get<any[]>(endpoint);
+  }
 }
