@@ -9,10 +9,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { KickUserComponent } from './modals/kick-user/kick-user.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-admin-community',
   templateUrl: './admin-community.component.html',
-  imports: [MatButtonModule,MatPaginator,CommonModule, MatTableModule],
+  imports: [MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
   styleUrls: ['./admin-community.component.scss']
 })
 export class AdminCommunityComponent implements OnInit {
@@ -32,6 +34,16 @@ export class AdminCommunityComponent implements OnInit {
   ngOnInit(): void {
     this.comunidadId = parseInt(this.route.snapshot.paramMap.get('id') || '0', 10);
     this.cargarUsuarios();
+
+  // Configurar el filtro para que busque por nombre
+    this.usuarios.filterPredicate = (data: any, filter: string) => {
+      return data.nombre.toLowerCase().includes(filter);
+    };
+  }
+
+  aplicarFiltro(event: Event): void {
+    const filtro = (event.target as HTMLInputElement).value;
+    this.usuarios.filter = filtro.trim().toLowerCase(); // Aplicar filtro en minúsculas y sin espacios
   }
 
   cargarUsuarios(): void {

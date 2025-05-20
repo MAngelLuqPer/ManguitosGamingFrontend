@@ -12,6 +12,9 @@ import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UsuarioApiService } from '../services/API/usuario-api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportPostComponent } from './modals/report-post/report-post.component';
+import { ReportesApiService } from '../services/API/reportes-api.service';
 @Component({
   selector: 'app-main-view-community',
   imports: [RouterLink, MatButtonModule, MatIconModule, MatCardModule, CommonModule],
@@ -25,7 +28,7 @@ export class MainViewCommunityComponent implements OnInit {
   posts: any[] = [];
   pertenece: boolean | null = null;
 
-  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService, private snackBar: MatSnackBar) {}
+  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService,private reportesApiService: ReportesApiService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
@@ -174,7 +177,35 @@ export class MainViewCommunityComponent implements OnInit {
       }
     });
   }
+  reportarPost(postId: number, event: Event): void {
+    event.stopPropagation(); // Evitar que el clic navegue al detalle de la publicación
 
+    const dialogRef = this.dialog.open(ReportPostComponent, {
+      width: '400px',
+      data: {
+        usuarioId: this.usuarioLogado.id,
+        publicacionId: postId,
+        comunidadId: parseInt(this.comunidadId)
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Datos del reporte:', result);
+        // Aquí puedes llamar al servicio para enviar el reporte al backend
+        this.reportesApiService.createReporte(result).subscribe({
+          next: () => {
+            console.log('Reporte enviado correctamente');
+            alert('El reporte ha sido enviado.');
+          },
+          error: (error) => {
+            console.error('Error al enviar el reporte:', error);
+            alert('Hubo un error al enviar el reporte.');
+          }
+        });
+      }
+    });
+  }
   abandonarComunidad(): void {
     if (!this.usuarioLogado || !this.comunidadId) {
       Swal.fire({
@@ -185,7 +216,6 @@ export class MainViewCommunityComponent implements OnInit {
       });
       return;
     }
-  
     const comunidadIdInt = parseInt(this.comunidadId);
     this.ComunidadesApiService.abandonarComunidad(this.usuarioLogado.id, comunidadIdInt).subscribe({
       next: () => {

@@ -1,5 +1,12 @@
 <div class="admin-community">
   <h2>Usuarios de la comunidad</h2>
+
+  <!-- Campo de búsqueda -->
+  <mat-form-field appearance="fill" class="search-field">
+    <mat-label>Buscar por nombre</mat-label>
+    <input matInput (keyup)="aplicarFiltro($event)" placeholder="Escribe un nombre">
+  </mat-form-field>
+
   <table mat-table [dataSource]="usuarios" matSort class="mat-elevation-z8" *ngIf="usuarios.data.length > 0; else noUsuarios">
     <!-- Columna Nombre -->
     <ng-container matColumnDef="nombre">

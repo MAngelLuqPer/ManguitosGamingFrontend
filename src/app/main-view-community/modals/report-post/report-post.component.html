@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Reportar publicación</h2>
+<mat-dialog-content>
+  <form [formGroup]="reportForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Motivo</mat-label>
+      <textarea matInput formControlName="motivo" placeholder="Escribe el motivo del reporte"></textarea>
+      <mat-error *ngIf="reportForm.get('motivo')?.hasError('required')">El motivo es obligatorio</mat-error>
+      <mat-error *ngIf="reportForm.get('motivo')?.hasError('minlength')">El motivo debe tener al menos 5 caracteres</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="warn" (click)="onSubmit()" [disabled]="!reportForm.valid">Enviar</button>
+</mat-dialog-actions>

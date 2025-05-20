@@ -45,8 +45,9 @@
                                 <mat-card-content>
                                     <p>{{ post.contenido }}</p>
                                 </mat-card-content>
-                                <mat-card-actions *ngIf="comunidad?.idUsuAdmin == usuarioLogado?.id">
+                                <mat-card-actions *ngIf="usuarioLogado" style="display: flex; justify-content: space-between; align-items: center;">
                                     <button mat-button color="warn" (click)="borrarPost(post.id, $event)">Borrar</button>
+                                    <button mat-button color="accent" (click)="reportarPost(post.id, $event)">Reportar</button>
                                 </mat-card-actions>
                             </div>
                         </div>
