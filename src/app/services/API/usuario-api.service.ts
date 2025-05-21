@@ -31,4 +31,8 @@ export class UsuarioApiService {
   getUsuarioById(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
+
+  buscarUsuariosPorNombre(texto: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/buscar?q=${encodeURIComponent(texto)}`);
+}
 }

@@ -15,11 +15,13 @@ import { ReportesApiService } from '../services/API/reportes-api.service'; // Im
 import { RouterLink } from '@angular/router';
 import { PostsApiService } from '../services/API/posts-api.service';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import {  MatCard, MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-admin-community',
   templateUrl: './admin-community.component.html',
-  imports: [MatSnackBarModule,RouterLink,MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
+  imports: [MatCardModule,MatSnackBarModule,RouterLink,MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
   styleUrls: ['./admin-community.component.scss']
 })
 export class AdminCommunityComponent implements OnInit {
@@ -39,7 +41,8 @@ export class AdminCommunityComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog, // Inyectar MatDialog
     private postApiService: PostsApiService,
-    private snackBar: MatSnackBar // Inyectar MatSnackBar
+    private snackBar: MatSnackBar, // Inyectar MatSnackBar
+    private router: Router // Inyectar Router
   ) {}
 
   ngOnInit(): void {
@@ -140,6 +143,47 @@ export class AdminCommunityComponent implements OnInit {
           error: (error) => {
             console.error('Error al borrar la publicación:', error);
             this.snackBar.open('Error al borrar la publicación', 'Cerrar', {
+              duration: 2000,
+            });
+          },
+        });
+      }
+    });
+  }
+    editarComunidad(): void {
+    this.router.navigate(['/editar-comunidad', this.comunidadId]);
+  }
+
+  scrollTo(section: string): void {
+  const el = document.getElementById(section);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+  borrarReporte(reporteId: number): void {
+    const id = reporteId;
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción eliminará el reporte de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('ID del reporte a borrar:', reporteId);
+        this.reportesApiService.deleteData(id).subscribe({
+          next: () => {
+            this.snackBar.open('Reporte borrado con éxito', 'Cerrar', {
+              duration: 2000,
+            });
+            this.cargarReportes();
+          },
+          error: (error) => {
+            console.error('Error al borrar el reporte:', error);
+            this.snackBar.open('Error al borrar el reporte', 'Cerrar', {
               duration: 2000,
             });
           },

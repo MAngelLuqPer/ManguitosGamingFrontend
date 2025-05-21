@@ -32,3 +32,79 @@ h3 {
     padding: 10px 20px;
     text-align: center;
 }
+
+.search-form-field {
+  width: 300px;
+  position: relative;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 99999999999999;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  padding: 8px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-section-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: 8px 16px 4px 16px;
+}
+
+.search-result-card {
+  margin: 4px 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.no-results {
+  padding: 16px;
+  text-align: center;
+}
+.search-container {
+  position: relative;
+  width: 300px; /* O el ancho que uses para el buscador */
+}
+
+.search-form-field {
+  width: 100%;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  background: var(--header-background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  padding: 8px 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-section-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 8px 16px 4px 16px;
+}
+
+.search-result-card {
+  padding: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-result-card:hover {
+  background: var(--hover-color);
+}
+
+.no-results {
+  padding: 16px;
+  text-align: center;}

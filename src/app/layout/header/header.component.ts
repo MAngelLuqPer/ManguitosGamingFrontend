@@ -13,9 +13,13 @@ import { MatMenu } from '@angular/material/menu';
 import { NgIf } from '@angular/common';
 import { Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioApiService } from '../../services/API/usuario-api.service';
+import { ComunidadesApiService } from '../../services/API/comunidades-api.service';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-header',
-  imports: [ NgIf,MatMenu,MatMenuModule,RouterModule,MatInputModule, MatIconModule,MatButtonModule,MatSlideToggleModule,RouterLink,FormsModule],
+  imports: [ CommonModule,MatCardModule,NgIf,MatMenu,MatMenuModule,RouterModule,MatInputModule, MatIconModule,MatButtonModule,MatSlideToggleModule,RouterLink,FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -27,7 +31,19 @@ export class HeaderComponent implements OnInit {
     this.toggleSidebar.emit(); // Emite el evento al componente padre
   }
   userName: string | null = null;
-  constructor(public lightDarkService: LightDarkService,private Router: Router) {}
+  searchTerm: string = '';
+  filteredUsers: any[] = [];
+  filteredCommunities: any[] = [];
+  showResults: boolean = false;
+  searchTimeout: any;
+
+  constructor(
+    public lightDarkService: LightDarkService,
+    private Router: Router,
+    private usuariosApi: UsuarioApiService,
+    private comunidadesApi: ComunidadesApiService
+  ) {}
+
   toggleDarkMode(): void {
     this.lightDarkService.toggleDarkMode();
   }
@@ -48,4 +64,39 @@ export class HeaderComponent implements OnInit {
     this.Router.navigate(['/']);
   }
 
+  onSearchChange() {
+    clearTimeout(this.searchTimeout);
+    if (!this.searchTerm.trim()) {
+      this.filteredUsers = [];
+      this.filteredCommunities = [];
+      return;
+    }
+    // Espera 300ms tras escribir para no saturar el backend
+    this.searchTimeout = setTimeout(() => {
+      this.usuariosApi.buscarUsuariosPorNombre(this.searchTerm).subscribe(users => this.filteredUsers = users || []);
+      this.comunidadesApi.buscarComunidadesPorNombre(this.searchTerm).subscribe(coms => this.filteredCommunities = coms || []);
+    }, 300);
+  } 
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.filteredUsers = [];
+    this.filteredCommunities = [];
+    this.showResults = false;
+  }
+
+  onBlur() {
+    // Espera un poco para permitir click en los resultados
+    setTimeout(() => this.showResults = false, 200);
+  }
+
+  goToUser(user: any) {
+    this.clearSearch();
+    this.Router.navigate(['/usuario', user.id]);
+  }
+
+  goToComunidad(comunidad: any) {
+    this.clearSearch();
+    this.Router.navigate(['/comunidad', comunidad.id]);
+  }
 }

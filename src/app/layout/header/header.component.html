@@ -19,10 +19,41 @@
                 >
                 <mat-icon class="ml-8">brightness_5</mat-icon>
                 </mat-slide-toggle>
-                <mat-form-field>
-                <input matInput placeholder="Buscar comunidad o usuario">
-                <mat-icon matPrefix>search</mat-icon>
-                </mat-form-field>
+                <div class="search-container">
+                  <mat-form-field class="search-form-field" appearance="outline">
+                    <input matInput
+                           placeholder="Buscar comunidad o usuario"
+                           [(ngModel)]="searchTerm"
+                           (input)="onSearchChange()"
+                           (focus)="showResults = true"
+                           (blur)="onBlur()"
+                           autocomplete="off">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <button *ngIf="searchTerm" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <!-- Resultados flotantes -->
+                  <div class="search-results" *ngIf="showResults && (filteredUsers.length || filteredCommunities.length)">
+                    <ng-container *ngIf="filteredUsers.length">
+                      <div class="search-section-title">Usuarios</div>
+                      <mat-card *ngFor="let user of filteredUsers" class="search-result-card" (mousedown)="goToUser(user)">
+                        <mat-card-title>{{ user.nombre }}</mat-card-title>
+                        <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+                      </mat-card>
+                    </ng-container>
+                    <ng-container *ngIf="filteredCommunities.length">
+                      <div class="search-section-title">Comunidades</div>
+                      <mat-card *ngFor="let comunidad of filteredCommunities" class="search-result-card" (mousedown)="goToComunidad(comunidad)">
+                        <mat-card-title>{{ comunidad.nombre }}</mat-card-title>
+                        <mat-card-subtitle>{{ comunidad.descripcion }}</mat-card-subtitle>
+                      </mat-card>
+                    </ng-container>
+                    <div *ngIf="!filteredUsers.length && !filteredCommunities.length" class="no-results">
+                      No se encontraron resultados.
+                    </div>
+                  </div>
+                </div>
             </div>
             <div class="d-flex gap-2 justify-content-center">
                 <div mat-button [matMenuTriggerFor]="userDropdown" *ngIf="userName">

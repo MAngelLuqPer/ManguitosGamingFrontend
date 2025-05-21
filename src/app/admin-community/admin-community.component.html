@@ -1,78 +1,87 @@
-<div class="admin-community">
-  <h2>Usuarios de la comunidad</h2>
+<div class="admin-community-layout">
+  <mat-card class="side-card">
+    <mat-card-title class="m-2">Opciones</mat-card-title>
+    <mat-card-content>
+      <nav>
+        <button mat-button (click)="scrollTo('usuarios-section')">Administrar usuarios</button>
+        <button mat-button (click)="scrollTo('reportes-section')">Ver reportes</button>
+        <button mat-button color="primary" (click)="editarComunidad()">Editar información de la comunidad</button>
+      </nav>
+    </mat-card-content>
+  </mat-card>
 
-  <!-- Campo de búsqueda -->
-  <mat-form-field appearance="fill" class="search-field">
-    <mat-label>Buscar por nombre</mat-label>
-    <input matInput (keyup)="aplicarFiltro($event)" placeholder="Escribe un nombre">
-  </mat-form-field>
+  <div class="main-content">
+    <h2 id="usuarios-section">Usuarios de la comunidad</h2>
 
-  <table mat-table [dataSource]="usuarios" class="mat-elevation-z8" *ngIf="usuarios.data.length > 0; else noUsuarios">
-    <!-- Columna Nombre -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-      <td mat-cell *matCellDef="let usuario"> {{ usuario.nombre }} </td>
-    </ng-container>
+    <!-- Campo de búsqueda -->
+    <mat-form-field appearance="fill" class="search-field">
+      <mat-label>Buscar por nombre</mat-label>
+      <input matInput (keyup)="aplicarFiltro($event)" placeholder="Escribe un nombre">
+    </mat-form-field>
 
-    <!-- Columna Email -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-      <td mat-cell *matCellDef="let usuario"> {{ usuario.email }} </td>
-    </ng-container>
+    <table mat-table [dataSource]="usuarios" class="mat-elevation-z8" *ngIf="usuarios.data.length > 0; else noUsuarios">
+      <!-- Columna Nombre -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.nombre }} </td>
+      </ng-container>
 
-    <!-- Columna Acciones -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let usuario">
-        <button mat-raised-button color="warn" (click)="expulsarUsuario(usuario)">Expulsar</button>
-      </td>
-    </ng-container>
+      <!-- Columna Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let usuario"> {{ usuario.email }} </td>
+      </ng-container>
 
-    <!-- Encabezado y filas -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator #usuariosPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let usuario">
+          <button mat-raised-button color="warn" (click)="expulsarUsuario(usuario)">Expulsar</button>
+        </td>
+      </ng-container>
 
-  <ng-template #noUsuarios>
-    <p>No hay usuarios en esta comunidad.</p>
-  </ng-template>
+      <!-- Encabezado y filas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator #usuariosPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
-  <!-- Nueva tabla de reportes -->
-  <h2>Reportes de la comunidad</h2>
+    <ng-template #noUsuarios>
+      <p>No hay usuarios en esta comunidad.</p>
+    </ng-template>
 
-  <table mat-table [dataSource]="reportes" class="mat-elevation-z8" *ngIf="reportes.data.length > 0; else noReportes">
-    <!-- Columna Fecha -->
-    <ng-container matColumnDef="fecha">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
-      <td mat-cell *matCellDef="let reporte"> {{ reporte.fechaReporte | date: 'short' }} </td>
-    </ng-container>
+    <h2 id="reportes-section" class="m-3">Reportes de la comunidad</h2>
+    <table mat-table [dataSource]="reportes" class="mat-elevation-z8" *ngIf="reportes.data.length > 0; else noReportes">
+      <!-- Columna Fecha -->
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+        <td mat-cell *matCellDef="let reporte"> {{ reporte.fechaReporte | date: 'short' }} </td>
+      </ng-container>
 
-    <!-- Columna Motivo -->
-    <ng-container matColumnDef="motivo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Motivo </th>
-      <td mat-cell *matCellDef="let reporte"> {{ reporte.motivo }} </td>
-    </ng-container>
+      <!-- Columna Motivo -->
+      <ng-container matColumnDef="motivo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Motivo </th>
+        <td mat-cell *matCellDef="let reporte"> {{ reporte.motivo }} </td>
+      </ng-container>
 
-    <!-- Columna Acciones -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let reporte">
-        <button mat-raised-button color="warn">Borrar reporte</button>
-        <button mat-raised-button color="accent" (click)="borrarPublicacion(reporte.publicacionId)">Borrar publicacion</button>
-        <button mat-raised-button color="primary" [routerLink]="['/publicacion', reporte.publicacionId]" *ngIf="reporte.publicacionId">Ver publicación</button>
-      </td>
-    </ng-container>
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let reporte">
+          <button mat-raised-button (click)="borrarReporte(reporte.id)" class="m-2">Borrar reporte</button>
+          <button mat-raised-button (click)="borrarPublicacion(reporte.publicacionId)" class="m-2">Borrar publicacion</button>
+          <button mat-raised-button [routerLink]="['/publicacion', reporte.publicacionId]" *ngIf="reporte.publicacionId" class="m-2">Ver publicación</button>
+        </td>
+      </ng-container>
 
-    <!-- Encabezado y filas -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumnsReportes"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumnsReportes;"></tr>
-  </table>
-  <mat-paginator #reportesPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <!-- Encabezado y filas -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsReportes"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsReportes;"></tr>
+    </table>
+    <mat-paginator #reportesPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
-  <ng-template #noReportes>
-    <p>No hay reportes disponibles para esta comunidad.</p>
-  </ng-template>
-
-
+    <ng-template #noReportes>
+      <p>No hay reportes disponibles para esta comunidad.</p>
+    </ng-template>
+  </div>
 </div>

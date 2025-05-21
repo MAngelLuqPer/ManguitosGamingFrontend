@@ -80,4 +80,14 @@ export class ComunidadesApiService {
     const endpoint = `${this.baseUrl}/comunidad/${comunidadId}/expulsar`;
     return this.http.post(endpoint, expulsionDTO);
   }
+
+  buscarComunidadesPorNombre(texto: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/comunidad/buscar?q=${encodeURIComponent(texto)}`);
+  }
+  getComunidadesDeUsuario(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/comunidad/usuario/${userId}`);
+}
+getComunidadesCreadasPorUsuario(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/comunidad/admin/${userId}`);
+}
 }

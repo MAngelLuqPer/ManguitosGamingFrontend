@@ -1,18 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
-import { menuList } from './menu-list';
+import { menuList, MenuItem } from './menu-list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { ComunidadesApiService } from '../../services/API/comunidades-api.service';
-import { MenuItem } from './menu-list';
-import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -26,46 +24,50 @@ import { Input } from '@angular/core';
     MatExpansionModule,
     RouterModule],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
+  styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent {
-  sideMenu :MenuItem[] = [];;
+export class MenuComponent implements OnInit {
+  sideMenu: MenuItem[] = [];
+  userId: number = 0; // Obtén el ID del usuario logueado según tu lógica
   @Input() collapse: boolean = false;
+
+  constructor(private router: Router, private comunidadesApi: ComunidadesApiService) {}
+
+  ngOnInit() {
+    const usuario = localStorage.getItem('usuario');
+    if (usuario) {
+      this.userId = JSON.parse(usuario).id;
+
+      // Cargar comunidades donde es miembro
+      this.comunidadesApi.getComunidadesDeUsuario(this.userId).subscribe(comunidades => {
+        const comunidadItems = comunidades.map((com: any) =>
+          new MenuItem(com.nombre, `/comunidad/${com.id}`, com.descripcion, 'group', [], com.foto)
+        );
+
+        // Cargar comunidades donde es creador
+        this.comunidadesApi.getComunidadesCreadasPorUsuario(this.userId).subscribe(creadas => {
+          const creadasItems = creadas.map((com: any) =>
+            new MenuItem(com.nombre, `/comunidad/${com.id}`, com.descripcion, 'star', [], com.foto)
+          );
+
+          this.sideMenu = [
+            ...menuList,
+            new MenuItem('Comunidades', '', 'Tus comunidades', 'group', comunidadItems),
+            new MenuItem('Creadas por ti', '', 'Comunidades que has creado', 'star', creadasItems)
+          ];
+        });
+      });
+    }
+  }
+
   toggleSidebar() {
     this.collapse = !this.collapse;
   }
-  constructor(private router: Router, private comunidadesApiService: ComunidadesApiService) {}
-
-  ngOnInit(): void {
-    this.sideMenu = [...menuList];
-    this.loadComunidades();
-  }
-
-  loadComunidades(): void {
-    this.comunidadesApiService.getAllComunidades().subscribe((comunidades) => {
-      const comunidadesMenu = new MenuItem(
-        'Comunidades',
-        '/adminUsers',
-        'Gestiona las comunidades',
-        'account_circle',
-        comunidades.map((comunidad) => new MenuItem(
-          comunidad.nombre,
-          `/comunidad/${comunidad.id}`,
-          comunidad.descripcion,
-          '', // Sin icono específico
-          [],
-          comunidad.foto // Agregar la foto de la comunidad
-        ))
-      );
-      this.sideMenu.splice(1, 0, comunidadesMenu); // Inserta después de "Inicio"
-    });
-  }
-
+  
   isChildActive(item: any): boolean {
     if (!item.children) {
       return false;
     }
     return item.children.some((child: any) => this.router.isActive(child.route, false));
   }
-  
 }

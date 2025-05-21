@@ -20,4 +20,8 @@ export class ReportesApiService {
     const endpoint = `${this.baseUrl}/reportes/comunidad/${comunidadId}`;
     return this.http.get<any[]>(endpoint);
   }
+  deleteData(id: number): Observable<any> {
+    const endpoint = `${this.baseUrl}/reportes/${id}`;
+    return this.http.delete(endpoint);
+  }
 }

@@ -2,3 +2,55 @@
     width: 300px; /* Ajusta el ancho según sea necesario */
     margin-bottom: 16px; /* Espaciado inferior para separar del contenido */
   }
+  
+.admin-community-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.side-card {
+  width: 260px;
+  min-width: 200px;
+  margin-bottom: 24px;
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsive: menú lateral arriba y ancho completo en móviles */
+@media (max-width: 1390px) {
+  .admin-community-layout {
+    flex-direction: column;
+    gap: 0;
+  }
+  .side-card {
+    width: 100%;
+    min-width: unset;
+    position: static;
+    margin-bottom: 16px;
+  }
+  .main-content {
+    width: 100%;
+  }
+}
+
+/* Opcional: mejora el espaciado de los botones en el menú */
+.side-card nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
