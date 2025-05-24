@@ -33,5 +33,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'administrar-comunidad/:id', // This renders the "/administrar-comunidad/:id" route on the server (SSR)
     renderMode: RenderMode.Server,
+  },
+  {
+    path: 'comunidad/editar/:id', // This renders the "/comunidad/editar/:id" route on the server (SSR)
+    renderMode: RenderMode.Server,
   }
 ];

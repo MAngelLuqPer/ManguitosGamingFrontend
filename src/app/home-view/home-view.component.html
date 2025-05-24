@@ -1,0 +1,71 @@
+<div class="home-view-layout">
+  <div class="main-content">
+    <mat-form-field appearance="fill" class="sort-field" style="margin-bottom: 16px;">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [(ngModel)]="ordenSeleccionado" (selectionChange)="ordenarPosts()">
+        <mat-option value="fecha">Fecha</mat-option>
+        <mat-option value="votos">Votaciones</mat-option>
+        <mat-option value="comunidad-mas-miembros">Comunidad: más miembros</mat-option>
+        <mat-option value="comunidad-menos-miembros">Comunidad: menos miembros</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="top-post-list">
+      <mat-card 
+        *ngFor="let post of topPosts" 
+        class="post-card"
+        [routerLink]="['/publicacion', post.id]"
+        style="cursor:pointer;">
+        <div class="post-content">
+          <div class="post-votes">
+            <mat-icon (click)="upvotePost(post, $event)">arrow_upward</mat-icon>
+            <span>{{ post.numVotos || 0 }}</span>
+            <mat-icon (click)="downvotePost(post, $event)">arrow_downward</mat-icon>
+          </div>
+          <div class="post-details">
+            <mat-card-header>
+              <mat-card-title>{{ post.titulo }}</mat-card-title>
+              <mat-card-subtitle>
+                Publicado por u/{{ post.usuarioNombre }} en m/{{ post.comunidadNombre }}
+              </mat-card-subtitle>
+              <mat-card-subtitle>
+                Publicado el {{ post.fechaPublicacion | date: 'short' }}
+              </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ post.contenido }}</p>
+            </mat-card-content>
+          </div>
+        </div>
+        <mat-card-actions *ngIf="usuarioLogado" style="display: flex; justify-content: space-between; align-items: center;">
+          <button mat-button color="accent" (click)="reportarPost(post.id, $event)">Reportar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <div class="side-content">
+    <mat-card class="top-communities-card">
+      <mat-card-header>
+        
+        <mat-card-title><mat-icon color="primary" style="margin-right: 8px;">insert_chart</mat-icon>Top 5 comunidades con más miembros</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="top-community-list">
+          <mat-card 
+            *ngFor="let comunidad of topComunidades" 
+            class="top-community-card"
+            (click)="goToComunidad(comunidad.id)"
+            style="cursor:pointer;">
+            <div class="top-community-info">
+              <img [src]="comunidad.foto || 'assets/images/MangoLogo.png'" alt="Logo" class="community-logo">
+              <div>
+                <div class="community-name">{{ comunidad.nombre }}</div>
+                <div class="community-members">{{ comunidad.numMiembros }} miembros</div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

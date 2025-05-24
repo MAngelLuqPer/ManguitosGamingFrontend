@@ -10,25 +10,20 @@ import { ViewPostComponent } from './view-post/view-post.component';
 import { authGuard } from './guards/auth.guard';
 import { AdminCommunityComponent } from './admin-community/admin-community.component';
 import { isAdminGuard } from './guards/is-admin.guard';
-
+import { HomeViewComponent } from './home-view/home-view.component';
+import { EditCommunityViewComponent } from './edit-community-view/edit-community-view.component';
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'comunidad/:id', component: MainViewCommunityComponent },
-      {
-        path: 'crear-publicacion/:id',
-        component: CreatePubliComponentComponent,
-        canActivate: [authGuard], // Proteger la ruta con el guard
-      },
-      {
-        path: 'crear-comunidad',
-        component: CreateCommunityComponent,
-        canActivate: [authGuard], // Proteger la ruta con el guard
-      },
-      { path: 'publicacion/:id', component: ViewPostComponent },
-      { path: 'administrar-comunidad/:id', component: AdminCommunityComponent, canActivate: [isAdminGuard] },
+      {path: '', component: HomeViewComponent},
+      {path: 'comunidad/:id', component: MainViewCommunityComponent },
+      {path:'comunidad/editar/:id', component: EditCommunityViewComponent, canActivate: [authGuard]},
+      {path: 'crear-publicacion/:id',component: CreatePubliComponentComponent,canActivate: [authGuard]},
+      {path: 'crear-comunidad',component: CreateCommunityComponent,canActivate: [authGuard]},
+      {path: 'publicacion/:id', component: ViewPostComponent },
+      {path: 'administrar-comunidad/:id', component: AdminCommunityComponent, canActivate: [isAdminGuard] },
     ],
   },
   { path: 'register', component: RegisterComponent },

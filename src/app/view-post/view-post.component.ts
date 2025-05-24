@@ -270,5 +270,45 @@ export class ViewPostComponent implements OnInit {
       }
     });
   }
+
+  upvotePost(event: Event): void {
+    event.stopPropagation();
+    if (!this.postId) return;
+    this.postsApiService.upvotePublicacion(this.postId).subscribe({
+      next: () => {
+        this.recargarPost(); // Recarga la publicación tras votar
+      },
+      error: (err) => {
+        this.snackBar.open('No se pudo votar.', 'Cerrar', { duration: 2000 });
+        console.error('Error al hacer upvote:', err);
+      }
+    });
+  }
+
+  downvotePost(event: Event): void {
+    event.stopPropagation();
+    if (!this.postId) return;
+    this.postsApiService.downvotePublicacion(this.postId).subscribe({
+      next: () => {
+        this.recargarPost(); // Recarga la publicación tras votar
+      },
+      error: (err) => {
+        this.snackBar.open('No se pudo votar.', 'Cerrar', { duration: 2000 });
+        console.error('Error al hacer downvote:', err);
+      }
+    });
+  }
+
+  private recargarPost(): void {
+    if (!this.postId) return;
+    this.postsApiService.getById(this.postId).subscribe({
+      next: (data) => {
+        this.post = data;
+      },
+      error: (err) => {
+        console.error('Error al recargar la publicación:', err);
+      }
+    });
+  }
 }
 

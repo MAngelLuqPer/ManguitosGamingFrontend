@@ -29,8 +29,5 @@ export class ComentariosApiService {
   getRespuestasByComentarioId(comentarioId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/comentarios/respuestas/${comentarioId}`);
   }
-  expulsarUsuario(comunidadId: number, expulsionDTO: { usuarioId: number; razon: string; fechaFin: string }): Observable<any> {
-    const endpoint = `${this.baseUrl}/comunidad/${comunidadId}/expulsar`;
-    return this.http.post(endpoint, expulsionDTO);
-  }
+
 }

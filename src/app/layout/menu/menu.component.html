@@ -11,8 +11,10 @@
             </div>
           </mat-expansion-panel-header>
           <div *ngFor="let child of item.children" [routerLink]="child.route" class="childrens" routerLinkActive="active-submenu-item">
-            <img [src]="'assets/images/' + child.foto" alt="{{ child.name }}" class="community-thumbnail" />
-            <span [style.cursor]="'pointer'">{{ child.name }}</span>
+            <span class="community-item-content">
+              <img [src]="child.foto" alt="{{ child.name }}" class="community-thumbnail" />
+              <span class="community-name" [style.cursor]="'pointer'">{{ child.name }}</span>
+            </span>
           </div>
         </mat-expansion-panel>
       </ng-container>

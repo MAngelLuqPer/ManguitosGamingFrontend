@@ -151,7 +151,7 @@ export class AdminCommunityComponent implements OnInit {
     });
   }
     editarComunidad(): void {
-    this.router.navigate(['/editar-comunidad', this.comunidadId]);
+    this.router.navigate(['/comunidad/editar', this.comunidadId]);
   }
 
   scrollTo(section: string): void {

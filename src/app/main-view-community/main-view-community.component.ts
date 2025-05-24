@@ -15,9 +15,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportPostComponent } from './modals/report-post/report-post.component';
 import { ReportesApiService } from '../services/API/reportes-api.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-main-view-community',
-  imports: [RouterLink, MatButtonModule, MatIconModule, MatCardModule, CommonModule],
+  imports: [MatSelectModule,MatInputModule,MatFormFieldModule,FormsModule,RouterLink, MatButtonModule, MatIconModule, MatCardModule, CommonModule],
   templateUrl: './main-view-community.component.html',
   styleUrl: './main-view-community.component.scss'
 })
@@ -27,6 +31,7 @@ export class MainViewCommunityComponent implements OnInit {
   comunidad: any;
   posts: any[] = [];
   pertenece: boolean | null = null;
+  ordenSeleccionado: string = 'votos';
 
   constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService,private reportesApiService: ReportesApiService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
 
@@ -44,6 +49,15 @@ export class MainViewCommunityComponent implements OnInit {
       this.loadPosts();
       this.verificarPertenencia();
     });
+  }
+
+  ordenarPosts(): void {
+    console.log('Orden seleccionado:', this.ordenSeleccionado);
+    if (this.ordenSeleccionado === 'fecha') {
+      this.posts.sort((a, b) => new Date(b.fechaPublicacion).getTime() - new Date(a.fechaPublicacion).getTime());
+    } else if (this.ordenSeleccionado === 'votos') {
+      this.posts.sort((a, b) => (b.numVotos || 0) - (a.numVotos || 0));
+    }
   }
 
   loadPosts(): void {
@@ -68,6 +82,8 @@ export class MainViewCommunityComponent implements OnInit {
             },
           });
         });
+
+        this.ordenarPosts();
 
         if (this.posts.length === 0) {
           console.log('No se encontraron publicaciones para esta comunidad.');
@@ -240,6 +256,33 @@ export class MainViewCommunityComponent implements OnInit {
           text: 'No se pudo abandonar la comunidad. Inténtalo de nuevo más tarde.',
           confirmButtonText: 'Aceptar'
         });
+      }
+    });
+  }
+  upvotePost(post: any, event: Event): void {
+    event.stopPropagation();
+    this.PostApiService.upvotePublicacion(post.id).subscribe({
+      next: () => {
+        post.votos = (post.votos || 0) + 1;
+        this.loadPosts();
+      },
+      error: (err) => {
+        console.error('Error al hacer upvote:', err);
+        this.snackBar.open('No se pudo votar.', 'Cerrar', { duration: 2000 });
+      }
+    });
+  }
+
+  downvotePost(post: any, event: Event): void {
+    event.stopPropagation();
+    this.PostApiService.downvotePublicacion(post.id).subscribe({
+      next: () => {
+        post.votos = (post.votos || 0) - 1;
+        this.loadPosts();
+      },
+      error: (err) => {
+        console.error('Error al hacer downvote:', err);
+        this.snackBar.open('No se pudo votar.', 'Cerrar', { duration: 2000 });
       }
     });
   }

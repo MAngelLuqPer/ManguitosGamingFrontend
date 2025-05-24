@@ -90,4 +90,8 @@ export class ComunidadesApiService {
 getComunidadesCreadasPorUsuario(userId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/comunidad/admin/${userId}`);
 }
+editarComunidad(id: number, comunidad: any): Observable<any> {
+  const endpoint = `${this.baseUrl}/comunidad/${id}`;
+  return this.http.put(endpoint, comunidad);
+}
 }

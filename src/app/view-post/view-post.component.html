@@ -7,9 +7,9 @@
     <mat-card class="post-card" >
         <div class="post-content">
             <div class="post-votes">
-                <mat-icon>arrow_upward</mat-icon>
-                <span>{{ post.votos || 0 }}</span>
-                <mat-icon>arrow_downward</mat-icon>
+                <mat-icon (click)="upvotePost($event)">arrow_upward</mat-icon>
+                <span>{{ post.numVotos || 0 }}</span>
+                <mat-icon (click)="downvotePost($event)">arrow_downward</mat-icon>
             </div>
             <div class="post-details">
                 <mat-card-header>

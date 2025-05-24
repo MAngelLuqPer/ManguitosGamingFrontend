@@ -3,7 +3,7 @@
         <div class="community-header" [style.backgroundImage]="'url(assets/images/MangoLogo.png)'">
             <div class="community-header-content">
                 <img class="community-avatar" [src]="comunidad?.imagenAvatar || 'assets/images/MangoLogo.png'" alt="Avatar de la comunidad">
-                <span class="community-name">Publicaciones de m/{{ comunidad?.nombre }}</span>
+                <span class="community-name">Publicaciones de {{ comunidad?.nombre }}</span>
                 <div class="community-actions">
                     <button mat-raised-button color="primary" *ngIf="usuarioLogado && pertenece" [routerLink]="['/crear-publicacion', comunidad?.id]">
                         Crear publicación
@@ -23,14 +23,23 @@
         </div>
         <div class="posts-section mt-4">
             <h2>Publicaciones de la comunidad {{ comunidadId }}</h2>
+            <div class="posts-sort-section">
+                <mat-form-field appearance="fill" class="sort-field">
+                    <mat-label>Ordenar por</mat-label>
+                    <mat-select [(ngModel)]="ordenSeleccionado" (selectionChange)="ordenarPosts()">
+                        <mat-option value="fecha">Fecha</mat-option>
+                        <mat-option value="votos">Votaciones</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
             <div *ngIf="posts.length > 0; else noPosts">
                 <div *ngFor="let post of posts" class="post">
                     <mat-card class="post-card" [routerLink]="['/publicacion', post.id]">
                         <div class="post-content">
                             <div class="post-votes">
-                                <mat-icon>arrow_upward</mat-icon>
-                                <span>{{ post.votos || 0 }}</span>
-                                <mat-icon>arrow_downward</mat-icon>
+                                <mat-icon (click)="upvotePost(post, $event)">arrow_upward</mat-icon>
+                                <span>{{ post.numVotos || 0 }}</span>
+                                <mat-icon (click)="downvotePost(post, $event)">arrow_downward</mat-icon>
                             </div>
                             <div class="post-details">
                                 <mat-card-header>

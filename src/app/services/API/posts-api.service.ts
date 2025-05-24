@@ -49,4 +49,11 @@ export class PostsApiService {
     return this.http.get(`${this.baseUrl}/publicacion/${id}`);
   }
   
+  upvotePublicacion(publicacionId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/publicacion/${publicacionId}/upvote`, {});
+  }
+
+  downvotePublicacion(publicacionId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/publicacion/${publicacionId}/downvote`, {});
+  }
 }

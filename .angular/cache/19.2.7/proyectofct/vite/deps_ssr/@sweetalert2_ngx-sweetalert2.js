@@ -2,8 +2,8 @@ import { createRequire } from 'module';const require = createRequire(import.meta
 import {
   CommonModule,
   NgTemplateOutlet
-} from "./chunk-HCQBYOVF.js";
-import "./chunk-4J2OA23N.js";
+} from "./chunk-3JCEIZ2K.js";
+import "./chunk-G7ZVP6FA.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -22,7 +22,6 @@ import {
   Output,
   TemplateRef,
   ViewContainerRef,
-  require_cjs,
   require_operators,
   setClassMetadata,
   ɵɵNgOnChangesFeature,
@@ -37,7 +36,10 @@ import {
   ɵɵlistener,
   ɵɵproperty,
   ɵɵtemplate
-} from "./chunk-OGMU4Y3G.js";
+} from "./chunk-ELZBIMTQ.js";
+import {
+  require_cjs
+} from "./chunk-AQYIT73X.js";
 import {
   __async,
   __spreadProps,

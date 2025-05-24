@@ -41,13 +41,27 @@ export class MenuComponent implements OnInit {
       // Cargar comunidades donde es miembro
       this.comunidadesApi.getComunidadesDeUsuario(this.userId).subscribe(comunidades => {
         const comunidadItems = comunidades.map((com: any) =>
-          new MenuItem(com.nombre, `/comunidad/${com.id}`, com.descripcion, 'group', [], com.foto)
+          new MenuItem(
+            com.nombre,
+            `/comunidad/${com.id}`,
+            com.descripcion,
+            'group',
+            [],
+           'assets/images/MangoLogo.png'
+          )
         );
 
         // Cargar comunidades donde es creador
         this.comunidadesApi.getComunidadesCreadasPorUsuario(this.userId).subscribe(creadas => {
           const creadasItems = creadas.map((com: any) =>
-            new MenuItem(com.nombre, `/comunidad/${com.id}`, com.descripcion, 'star', [], com.foto)
+            new MenuItem(
+              com.nombre,
+              `/comunidad/${com.id}`,
+              com.descripcion,
+              'star',
+              [],
+              com.foto ? com.foto : 'assets/images/MangoLogo.png'
+            )
           );
 
           this.sideMenu = [
