@@ -1,4 +1,15 @@
-<div class="main-view-community">
+<div *ngIf="expulsado; else contenidoComunidad" class="expulsion-message">
+  <mat-card>
+    <mat-card-content>
+      <mat-icon color="warn">block</mat-icon>
+      <p>Has sido expulsado de esta comunidad hasta el {{ fechaFinExpulsion | date:'short' }}.<br>
+      No puedes ver ni participar en las publicaciones.</p>
+      <p *ngIf="motivoExpulsion"><strong>Motivo:</strong> {{ motivoExpulsion }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+<ng-template #contenidoComunidad>
+  <div class="main-view-community">
     <div class="main-content">
         <div class="community-header" [style.backgroundImage]="'url(assets/images/MangoLogo.png)'">
             <div class="community-header-content">
@@ -8,7 +19,7 @@
                     <button mat-raised-button color="primary" *ngIf="usuarioLogado && pertenece" [routerLink]="['/crear-publicacion', comunidad?.id]">
                         Crear publicación
                     </button>
-                    <button mat-raised-button color="accent"  (click)="joinComunidad()" *ngIf="usuarioLogado && !pertenece">Unirse</button>
+                    <button mat-raised-button color="accent"  (click)="joinComunidad()" *ngIf="usuarioLogado && !pertenece && !expulsado">Unirse</button>
                     <button mat-raised-button color="warn" *ngIf="pertenece" (click)="abandonarComunidad()">Abandonar</button>
                     <button 
                         mat-raised-button 
@@ -55,7 +66,7 @@
                                     <p>{{ post.contenido }}</p>
                                 </mat-card-content>
                                 <mat-card-actions *ngIf="usuarioLogado" style="display: flex; justify-content: space-between; align-items: center;">
-                                    <button mat-button color="warn" (click)="borrarPost(post.id, $event)">Borrar</button>
+                                    <button mat-button *ngIf="usuarioLogado?.id == comunidad.idUsuAdmin || usuarioLogado?.id == post.usuarioId" color="warn" (click)="borrarPost(post.id, $event)">Borrar</button>
                                     <button mat-button color="accent" (click)="reportarPost(post.id, $event)">Reportar</button>
                                 </mat-card-actions>
                             </div>
@@ -93,4 +104,5 @@
             </mat-card-content>
         </mat-card>
     </div>
-</div>
+  </div>
+</ng-template>

@@ -18,6 +18,7 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import {  MatCard, MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { EditFechaExpulsionModalComponent } from './modals/edit-fecha-expulsion-modal/edit-fecha-expulsion-modal.component';
 @Component({
   selector: 'app-admin-community',
   templateUrl: './admin-community.component.html',
@@ -30,6 +31,7 @@ export class AdminCommunityComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'email', 'acciones'];
   displayedColumnsReportes: string[] = ['fecha', 'motivo', 'acciones']; // Columnas para la tabla de reportes
   comunidadId!: number;
+  expulsados: any[] = [];
 
   @ViewChild('usuariosPaginator') usuariosPaginator!: MatPaginator;
   @ViewChild('reportesPaginator') reportesPaginator!: MatPaginator;
@@ -48,9 +50,21 @@ export class AdminCommunityComponent implements OnInit {
   ngOnInit(): void {
     this.comunidadId = parseInt(this.route.snapshot.paramMap.get('id') || '0', 10);
     this.cargarUsuarios();
-    this.cargarReportes(); // Cargar los reportes
+    this.cargarReportes();
+    this.cargarExpulsados();
 
-  // Configurar el filtro para que busque por nombre
+    // Suscribirse para ejecutar la limpieza
+    this.comunidadesApiService.limpiarExpulsionesVencidas().subscribe({
+      next: (res) => {
+        // Opcional: puedes mostrar un mensaje si quieres
+        // this.snackBar.open('Expulsiones vencidas limpiadas', 'Cerrar', { duration: 2000 });
+        this.cargarExpulsados(); // Refresca la lista tras limpiar
+      },
+      error: (err) => {
+        console.error('Error al limpiar expulsiones vencidas:', err);
+      }
+    });
+
     this.usuarios.filterPredicate = (data: any, filter: string) => {
       return data.nombre.toLowerCase().includes(filter);
     };
@@ -188,6 +202,88 @@ export class AdminCommunityComponent implements OnInit {
             });
           },
         });
+      }
+    });
+  }
+
+  // --- Expulsiones ---
+  cargarExpulsados(): void {
+    this.comunidadesApiService.getUsuariosExpulsados(this.comunidadId).subscribe({
+      next: (expulsados) => {
+        // Limpiar el sufijo [UTC] de todas las fechas
+        this.expulsados = expulsados.map((exp: any) => ({
+          ...exp,
+          fechaFin: exp.fechaFin ? exp.fechaFin.replace('[UTC]', '') : null
+        }));
+      },
+      error: (error) => {
+        console.error('Error al cargar los expulsados:', error);
+      }
+    });
+  }
+
+  borrarExpulsion(expulsado: any): void {
+    Swal.fire({
+      title: '¿Eliminar expulsión?',
+      text: `¿Seguro que quieres eliminar la expulsión de ${expulsado.usuarioNombre}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.comunidadesApiService.eliminarExpulsion(expulsado.id).subscribe({
+          next: () => {
+            this.snackBar.open('Expulsión eliminada', 'Cerrar', { duration: 2000 });
+            this.cargarExpulsados();
+          },
+          error: (error) => {
+            console.error('Error al eliminar expulsión:', error);
+            this.snackBar.open('Error al eliminar expulsión', 'Cerrar', { duration: 2000 });
+          }
+        });
+      }
+    });
+  }
+
+  expulsadoSeleccionado: any = null;
+  nuevaFechaExpulsion: string = '';
+
+  abrirModalFecha(expulsado: any) {
+    const dialogRef = this.dialog.open(EditFechaExpulsionModalComponent, {
+      data: { fechaFin: expulsado.fechaFin }
+    });
+
+    dialogRef.afterClosed().subscribe(nuevaFecha => {
+      if (nuevaFecha) {
+        this.cambiarFechaExpulsion(expulsado, nuevaFecha);
+      }
+    });
+  }
+
+  cerrarModalFecha() {
+    this.expulsadoSeleccionado = null;
+    this.nuevaFechaExpulsion = '';
+  }
+
+  confirmarCambioFecha() {
+    if (this.expulsadoSeleccionado && this.nuevaFechaExpulsion) {
+      this.cambiarFechaExpulsion(this.expulsadoSeleccionado, this.nuevaFechaExpulsion);
+      this.cerrarModalFecha();
+    }
+  }
+
+  cambiarFechaExpulsion(expulsado: any, nuevaFecha: string): void {
+    this.comunidadesApiService.cambiarFechaExpulsion(expulsado.id, nuevaFecha).subscribe({
+      next: () => {
+        this.snackBar.open('Fecha de expulsión actualizada', 'Cerrar', { duration: 2000 });
+        this.cargarExpulsados();
+      },
+      error: (error) => {
+        console.error('Error al cambiar fecha de expulsión:', error);
+        this.snackBar.open('Error al cambiar fecha', 'Cerrar', { duration: 2000 });
       }
     });
   }

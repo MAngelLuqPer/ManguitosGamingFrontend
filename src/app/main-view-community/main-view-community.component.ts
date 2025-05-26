@@ -32,6 +32,9 @@ export class MainViewCommunityComponent implements OnInit {
   posts: any[] = [];
   pertenece: boolean | null = null;
   ordenSeleccionado: string = 'votos';
+  expulsado: boolean = false;
+  fechaFinExpulsion: Date | null = null;
+  motivoExpulsion: string | null = null;
 
   constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService,private reportesApiService: ReportesApiService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
 
@@ -48,6 +51,7 @@ export class MainViewCommunityComponent implements OnInit {
       this.loadComunidad();
       this.loadPosts();
       this.verificarPertenencia();
+      this.loadExpulsados(); // <--- Añade esto
     });
   }
 
@@ -61,13 +65,17 @@ export class MainViewCommunityComponent implements OnInit {
   }
 
   loadPosts(): void {
+    if (this.expulsado) {
+      this.posts = [];
+      return;
+    }
     this.ComunidadesApiService.getPostsByComunidadId(this.comunidadId).subscribe({
       next: (data) => {
         this.posts = data.map((post) => ({
           ...post,
           fechaPublicacion: new Date(post.fechaPublicacion.replace('[UTC]', '')), // Convertir a objeto Date
         }));
-
+        console.log('Publicaciones cargadas:', this.posts);
         // Ordenar las publicaciones de más reciente a menos reciente
         this.posts.sort((a, b) => b.fechaPublicacion.getTime() - a.fechaPublicacion.getTime());
 
@@ -283,6 +291,40 @@ export class MainViewCommunityComponent implements OnInit {
       error: (err) => {
         console.error('Error al hacer downvote:', err);
         this.snackBar.open('No se pudo votar.', 'Cerrar', { duration: 2000 });
+      }
+    });
+  }
+
+  loadExpulsados(): void {
+    if (!this.usuarioLogado || !this.comunidadId) {
+      this.expulsado = false;
+      return;
+    }
+    this.ComunidadesApiService.getUsuariosExpulsados(parseInt(this.comunidadId)).subscribe({
+      next: (expulsados) => {
+        const expulsado = expulsados.find((e: any) => e.usuarioId === this.usuarioLogado.id);
+        if (expulsado) {
+          const fechaFin = new Date(expulsado.fechaFin.replace('[UTC]', ''));
+          const ahora = new Date();
+          if (fechaFin > ahora) {
+            this.expulsado = true;
+            this.fechaFinExpulsion = fechaFin;
+            this.motivoExpulsion = expulsado.razon; 
+          } else {
+            this.expulsado = false;
+            this.fechaFinExpulsion = null;
+            this.motivoExpulsion = null;
+          }
+        } else {
+          this.expulsado = false;
+          this.fechaFinExpulsion = null;
+          this.motivoExpulsion = null;
+        }
+      },
+      error: () => {
+        this.expulsado = false;
+        this.fechaFinExpulsion = null;
+        this.motivoExpulsion = null;
       }
     });
   }

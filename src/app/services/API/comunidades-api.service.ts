@@ -94,4 +94,19 @@ editarComunidad(id: number, comunidad: any): Observable<any> {
   const endpoint = `${this.baseUrl}/comunidad/${id}`;
   return this.http.put(endpoint, comunidad);
 }
+getUsuariosExpulsados(comunidadId: number): Observable<any[]> {
+  const endpoint = `${this.baseUrl}/comunidad/${comunidadId}/expulsados`;
+  return this.http.get<any[]>(endpoint);
+}
+eliminarExpulsion(expulsionId: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/comunidad/expulsar/${expulsionId}`);
+}
+cambiarFechaExpulsion(expulsionId: number, nuevaFecha: string): Observable<any> {
+  const endpoint = `${this.baseUrl}/comunidad/expulsar/${expulsionId}/fecha`;
+  return this.http.put(endpoint, { fechaFin: nuevaFecha });
+}
+limpiarExpulsionesVencidas(): Observable<any> {
+  const endpoint = `${this.baseUrl}/comunidad/expulsar/limpiar-vencidas`;
+  return this.http.delete(endpoint);
+}
 }

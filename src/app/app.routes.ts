@@ -12,6 +12,7 @@ import { AdminCommunityComponent } from './admin-community/admin-community.compo
 import { isAdminGuard } from './guards/is-admin.guard';
 import { HomeViewComponent } from './home-view/home-view.component';
 import { EditCommunityViewComponent } from './edit-community-view/edit-community-view.component';
+import { comunidadExpulsadoGuard } from './guards/comunidad-expulsado-guard.guard';
 export const routes: Routes = [
   {
     path: '',
@@ -22,7 +23,7 @@ export const routes: Routes = [
       {path:'comunidad/editar/:id', component: EditCommunityViewComponent, canActivate: [authGuard]},
       {path: 'crear-publicacion/:id',component: CreatePubliComponentComponent,canActivate: [authGuard]},
       {path: 'crear-comunidad',component: CreateCommunityComponent,canActivate: [authGuard]},
-      {path: 'publicacion/:id', component: ViewPostComponent },
+      {path: 'publicacion/:id', component: ViewPostComponent, canActivate: [comunidadExpulsadoGuard] },
       {path: 'administrar-comunidad/:id', component: AdminCommunityComponent, canActivate: [isAdminGuard] },
     ],
   },

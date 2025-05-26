@@ -122,6 +122,8 @@ export class RegisterComponent {
             title: '¡Registro exitoso!',
             text: 'El usuario ha sido registrado correctamente.',
             confirmButtonText: 'Aceptar'
+          }).then(() => {
+            this.Router.navigate(['/login']);
           });
         },
         error: (error) => {
@@ -132,9 +134,7 @@ export class RegisterComponent {
             title: 'Error en el registro',
             text: 'Ocurrió un error al registrar el usuario. Por favor, inténtalo de nuevo.',
             confirmButtonText: 'Aceptar'
-          }).then(() => {
-            this.Router.navigate(['/login']);
-          });
+          })
         },
       });
     }

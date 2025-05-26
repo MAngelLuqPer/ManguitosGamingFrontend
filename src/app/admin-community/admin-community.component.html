@@ -83,5 +83,45 @@
     <ng-template #noReportes>
       <p>No hay reportes disponibles para esta comunidad.</p>
     </ng-template>
+
+    <h2 id="expulsiones-section" class="m-3">Expulsiones de la comunidad</h2>
+    <table mat-table [dataSource]="expulsados" class="mat-elevation-z8" *ngIf="expulsados.length > 0; else noExpulsados">
+      <!-- Columna Usuario -->
+      <ng-container matColumnDef="usuario">
+        <th mat-header-cell *matHeaderCellDef> Usuario </th>
+        <td mat-cell *matCellDef="let expulsado"> {{ expulsado.usuarioNombre }} </td>
+      </ng-container>
+
+      <!-- Columna Motivo -->
+      <ng-container matColumnDef="razon">
+        <th mat-header-cell *matHeaderCellDef> Motivo </th>
+        <td mat-cell *matCellDef="let expulsado"> {{ expulsado.razon }} </td>
+      </ng-container>
+
+      <!-- Columna Fecha Fin -->
+      <ng-container matColumnDef="fechaFin">
+        <th mat-header-cell *matHeaderCellDef> Fin de expulsión </th>
+        <td mat-cell *matCellDef="let expulsado">
+          <span>
+            {{ expulsado.fechaFin ? (expulsado.fechaFin | date:'short') : 'Permanente' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let expulsado">
+            <button mat-button color="primary" (click)="abrirModalFecha(expulsado)">Cambiar fecha</button>
+          <button mat-raised-button color="warn" (click)="borrarExpulsion(expulsado)">Eliminar expulsión</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['usuario', 'razon', 'fechaFin', 'acciones']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['usuario', 'razon', 'fechaFin', 'acciones'];"></tr>
+    </table>
+    <ng-template #noExpulsados>
+      <p>No hay usuarios expulsados actualmente.</p>
+    </ng-template>
   </div>
 </div>
