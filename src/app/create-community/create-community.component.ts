@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { ComunidadesApiService } from '../services/API/comunidades-api.service';
 import { RouterLink } from '@angular/router';
+import { CommunityEventsService } from '../services/community-events.service';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-create-community',
@@ -25,7 +26,8 @@ export class CreateCommunityComponent {
 
   constructor(
     private comunidadesApiService: ComunidadesApiService,
-    private router: Router
+    private router: Router,
+    public c: CommunityEventsService
   ) {}
 
   addRegla(): void {
@@ -54,6 +56,7 @@ export class CreateCommunityComponent {
           text: 'La comunidad se ha creado correctamente.',
           confirmButtonText: 'Aceptar'
         }).then(() => {
+          this.c.notifyMenuRefresh();
           this.router.navigate(['/']);
         });
       },
@@ -69,4 +72,7 @@ export class CreateCommunityComponent {
     });
   }
 
+  cancelar() {
+    this.router.navigate(['/']);
+  }
 }

@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { CommunityEventsService } from '../services/community-events.service';
 @Component({
   selector: 'app-main-view-community',
   imports: [MatSelectModule,MatInputModule,MatFormFieldModule,FormsModule,RouterLink, MatButtonModule, MatIconModule, MatCardModule, CommonModule],
@@ -36,7 +37,7 @@ export class MainViewCommunityComponent implements OnInit {
   fechaFinExpulsion: Date | null = null;
   motivoExpulsion: string | null = null;
 
-  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService,private reportesApiService: ReportesApiService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
+  constructor(private route: ActivatedRoute, private ComunidadesApiService: ComunidadesApiService, private router: Router, private PostApiService: PostsApiService, private usuarioApiService: UsuarioApiService,private reportesApiService: ReportesApiService, private snackBar: MatSnackBar, private dialog: MatDialog, public c: CommunityEventsService) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && localStorage) {
@@ -185,6 +186,7 @@ export class MainViewCommunityComponent implements OnInit {
           confirmButtonText: 'Aceptar'
         }).then(() => {
           // Recarga el componente
+          this.c.notifyMenuRefresh();
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate([`/comunidad/${this.comunidadId}`]);
           });
@@ -251,6 +253,7 @@ export class MainViewCommunityComponent implements OnInit {
           text: 'Ya no perteneces a esta comunidad.',
           confirmButtonText: 'Aceptar'
         }).then(() => {
+          this.c.notifyMenuRefresh();
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate([`/comunidad/${this.comunidadId}`]);
           });

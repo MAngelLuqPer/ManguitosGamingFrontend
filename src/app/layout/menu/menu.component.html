@@ -3,14 +3,18 @@
     <img src="assets/images/MangoLogo.png" class="logo">
     <div *ngFor="let item of sideMenu" class="my-2">
       <ng-container *ngIf="item.children && item.children.length > 0; else singleItem">
-        <mat-expansion-panel *ngIf="!collapse" routerLinkActive="active-menu-item">
+        <mat-expansion-panel *ngIf="!collapse" routerLinkActive="active-menu-item" [routerLinkActiveOptions]="{ exact: true }">
           <mat-expansion-panel-header>
             <div class="menu-subitem">
               <mat-icon [matTooltip]="item.tip">{{ item.icon }}</mat-icon>
               <span [hidden]="collapse">{{ item.name }}</span>
             </div>
           </mat-expansion-panel-header>
-          <div *ngFor="let child of item.children" [routerLink]="child.route" class="childrens" routerLinkActive="active-submenu-item">
+          <div *ngFor="let child of item.children"
+               [routerLink]="child.route"
+               class="childrens"
+               routerLinkActive="active-menu-item"
+               [routerLinkActiveOptions]="{ exact: true }">
             <span class="community-item-content">
               <img [src]="child.foto" alt="{{ child.name }}" class="community-thumbnail" />
               <span class="community-name" [style.cursor]="'pointer'">{{ child.name }}</span>
