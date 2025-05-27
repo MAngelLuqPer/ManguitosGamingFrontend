@@ -109,4 +109,9 @@ limpiarExpulsionesVencidas(): Observable<any> {
   const endpoint = `${this.baseUrl}/comunidad/expulsar/limpiar-vencidas`;
   return this.http.delete(endpoint);
 }
+borrarComunidad(comunidadId: number): Observable<any> {
+  console.log('Borrando comunidad con ID:', comunidadId);
+  const endpoint = `${this.baseUrl}/comunidad/${comunidadId}`;
+  return this.http.delete(endpoint);
+}
 }

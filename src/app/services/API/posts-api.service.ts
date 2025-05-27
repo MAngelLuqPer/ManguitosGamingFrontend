@@ -56,4 +56,8 @@ export class PostsApiService {
   downvotePublicacion(publicacionId: number): Observable<any> {
     return this.http.post(`${this.baseUrl}/publicacion/${publicacionId}/downvote`, {});
   }
+
+  getPublicacionesByUsuario(usuarioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/publicacion/usuario/${usuarioId}/posts`);
+  }
 }

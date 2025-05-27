@@ -1,0 +1,52 @@
+<div class="user-profile-card">
+  <mat-card>
+    <mat-card-header>
+      <mat-icon color="warn" class="profile-icon">person</mat-icon>
+      <span class="profile-title">Perfil de {{ usuario?.nombre || 'Usuario' }}</span>
+    </mat-card-header>
+    <div class="banner-container">
+      <img class="banner-img" [src]="'assets/images/deltarune.jpg' " alt="Banner de perfil">
+      <div class="profile-avatar-container">
+        <img class="profile-avatar" [src]="'assets/images/MangoLogo.png' " alt="Avatar">
+        <span class="profile-username">{{ usuario?.nombre }}</span>
+      </div>
+    </div>
+    <mat-card-content>
+      <div class="profile-info-row">
+        <mat-icon>calendar_today</mat-icon>
+        <span class="profile-info-label">Fecha de creación</span>
+        <span class="profile-info-value">{{ usuario?.fechaCreacion ? (usuario.fechaCreacion | date:'dd/MM/yyyy') : '' }}</span>
+      </div>
+      <div class="profile-info-row">
+        <mat-icon>description</mat-icon>
+        <span class="profile-info-label">Descripción</span>
+        <span class="profile-info-value">{{ usuario?.descripcion || 'Sin descripción' }}</span>
+      </div>
+      <div class="profile-info-row">
+        <mat-icon>comment</mat-icon>
+        <span class="profile-info-label">Comentarios</span>
+        <span class="profile-info-value">{{ usuario?.numComentarios }}</span>
+      </div>
+      <div class="profile-info-row">
+        <mat-icon>article</mat-icon>
+        <span class="profile-info-label">Publicaciones</span>
+        <span class="profile-info-value">{{ usuario?.numPublicaciones }}</span>
+      </div>
+    </mat-card-content>
+    <mat-card-actions *ngIf="usuarioLogado?.id === usuario?.id">
+      <button mat-raised-button color="warn" class="edit-profile-btn"><mat-icon>mode_edit</mat-icon>Editar perfil</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<div *ngIf="usuario?.privacidad === false">
+  <h3>Publicaciones</h3>
+  <div *ngIf="publicaciones.length > 0; else noPosts">
+    <mat-card *ngFor="let post of publicaciones" class="user-post-card">
+      <mat-card-title>{{ post.titulo }}</mat-card-title>
+      <mat-card-content>{{ post.contenido }}</mat-card-content>
+    </mat-card>
+  </div>
+  <ng-template #noPosts>
+    <p>Este usuario no tiene publicaciones públicas.</p>
+  </ng-template>
+</div>

@@ -13,12 +13,14 @@ import { isAdminGuard } from './guards/is-admin.guard';
 import { HomeViewComponent } from './home-view/home-view.component';
 import { EditCommunityViewComponent } from './edit-community-view/edit-community-view.component';
 import { comunidadExpulsadoGuard } from './guards/comunidad-expulsado-guard.guard';
+import { ViewUserProfileComponent } from './view-user-profile/view-user-profile.component';
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
     children: [
       {path: '', component: HomeViewComponent},
+      {path: 'usuario/:id', component:ViewUserProfileComponent},
       {path: 'comunidad/:id', component: MainViewCommunityComponent },
       {path:'comunidad/editar/:id', component: EditCommunityViewComponent, canActivate: [authGuard]},
       {path: 'crear-publicacion/:id',component: CreatePubliComponentComponent,canActivate: [authGuard]},

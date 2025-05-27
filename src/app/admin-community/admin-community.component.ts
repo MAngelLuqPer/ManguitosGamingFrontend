@@ -56,9 +56,7 @@ export class AdminCommunityComponent implements OnInit {
     // Suscribirse para ejecutar la limpieza
     this.comunidadesApiService.limpiarExpulsionesVencidas().subscribe({
       next: (res) => {
-        // Opcional: puedes mostrar un mensaje si quieres
-        // this.snackBar.open('Expulsiones vencidas limpiadas', 'Cerrar', { duration: 2000 });
-        this.cargarExpulsados(); // Refresca la lista tras limpiar
+        this.cargarExpulsados(); 
       },
       error: (err) => {
         console.error('Error al limpiar expulsiones vencidas:', err);
@@ -72,17 +70,15 @@ export class AdminCommunityComponent implements OnInit {
 
   aplicarFiltro(event: Event): void {
     const filtro = (event.target as HTMLInputElement).value;
-    this.usuarios.filter = filtro.trim().toLowerCase(); // Aplicar filtro en minúsculas y sin espacios
+    this.usuarios.filter = filtro.trim().toLowerCase();
   }
 
   cargarUsuarios(): void {
     this.comunidadesApiService.getUsuariosDeComunidad(this.comunidadId).subscribe({
       next: (usuarios) => {
-        // Filtrar al administrador de la lista de usuarios
         const idUsuAdmin = parseInt(this.route.snapshot.queryParamMap.get('idUsuAdmin') || '0');
         this.usuarios.data = usuarios.filter((usuario) => usuario.id !== idUsuAdmin);
 
-        // Configurar paginación y ordenación
         this.usuarios.paginator = this.usuariosPaginator;
         this.usuarios.sort = this.sort;
       },
@@ -273,6 +269,33 @@ export class AdminCommunityComponent implements OnInit {
       this.cambiarFechaExpulsion(this.expulsadoSeleccionado, this.nuevaFechaExpulsion);
       this.cerrarModalFecha();
     }
+  }
+  borrarComunidad(id: any)
+  {
+    console.log('ID de la comunidad a borrar:', id);
+    Swal.fire({
+      title: '¿Eliminar comunidad?',
+      text: 'Esta acción eliminará la comunidad de forma permanente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.comunidadesApiService.borrarComunidad(id).subscribe({
+          next: () => {
+            this.snackBar.open('Comunidad eliminada con éxito', 'Cerrar', { duration: 2000 });
+            this.router.navigate(['/comunidades']);
+          },
+          error: (error) => {
+            console.error('Error al eliminar la comunidad:', error);
+            this.snackBar.open('Error al eliminar la comunidad', 'Cerrar', { duration: 2000 });
+          }
+        });
+      }
+    });
   }
 
   cambiarFechaExpulsion(expulsado: any, nuevaFecha: string): void {
