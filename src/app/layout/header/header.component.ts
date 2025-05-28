@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
     this.toggleSidebar.emit(); // Emite el evento al componente padre
   }
   userName: string | null = null;
+  userId = JSON.parse(localStorage.getItem('usuario') || '{}').id;
   searchTerm: string = '';
   filteredUsers: any[] = [];
   filteredCommunities: any[] = [];

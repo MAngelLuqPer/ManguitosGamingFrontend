@@ -13,8 +13,8 @@ export class UsuarioApiService {
   constructor(private http: HttpClient) {}
 
   // Login de usuario
-  login(email: string, pwd: string): Observable<any> {
-    const loginRequest = { email, pwd };
+  login(email: string, pwd: string, ip: string): Observable<any> {
+    const loginRequest = { email, pwd, ip };
     return this.http.post(`${this.baseUrl}/login`, loginRequest);
   }
 
@@ -35,4 +35,13 @@ export class UsuarioApiService {
   buscarUsuariosPorNombre(texto: string): Observable<any[]> {
   return this.http.get<any[]>(`${this.baseUrl}/buscar?q=${encodeURIComponent(texto)}`);
 }
+  editarUsuario(id: number, usuario: { nombre: string, descripcion: string, privacidad: boolean }): Observable<any> {
+    // El backend espera el nombre SIN prefijo "u/", lo añade él mismo
+    const usuarioDTO = {
+      nombre: usuario.nombre,
+      descripcion: usuario.descripcion,
+      privacidad: usuario.privacidad
+    };
+    return this.http.put(`${this.baseUrl}/${id}`, usuarioDTO);
+  }
 }

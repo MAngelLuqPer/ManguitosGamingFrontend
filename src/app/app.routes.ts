@@ -14,6 +14,8 @@ import { HomeViewComponent } from './home-view/home-view.component';
 import { EditCommunityViewComponent } from './edit-community-view/edit-community-view.component';
 import { comunidadExpulsadoGuard } from './guards/comunidad-expulsado-guard.guard';
 import { ViewUserProfileComponent } from './view-user-profile/view-user-profile.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { editUserGuard } from './guards/edit-user.guard';
 export const routes: Routes = [
   {
     path: '',
@@ -21,6 +23,7 @@ export const routes: Routes = [
     children: [
       {path: '', component: HomeViewComponent},
       {path: 'usuario/:id', component:ViewUserProfileComponent},
+      {path: 'editar-usuario/:id', component: EditUserComponent, canActivate: [editUserGuard]},
       {path: 'comunidad/:id', component: MainViewCommunityComponent },
       {path:'comunidad/editar/:id', component: EditCommunityViewComponent, canActivate: [authGuard]},
       {path: 'crear-publicacion/:id',component: CreatePubliComponentComponent,canActivate: [authGuard]},

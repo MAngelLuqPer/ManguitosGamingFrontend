@@ -41,31 +41,37 @@ export class LoginComponent {
   passwordFormControl = new FormControl('', [Validators.required]);
 
   matcher = new MyErrorStateMatcher(); constructor(private usuarioApiService: UsuarioApiService, private router: Router) {}
-  login(): void {
+  async login(): Promise<void> {
     const email = this.emailFormControl.value;
     const password = this.passwordFormControl.value;
-  
+
     if (!email || !password) {
-      console.error('El email o la contraseña están vacíos.');
       this.loginError = 'El email o la contraseña están vacíos.';
       return;
     }
-  
+
     if (this.emailFormControl.valid && this.passwordFormControl.valid) {
-      this.usuarioApiService.login(email, password).subscribe({
-        next: (response) => {
-          console.log('Inicio de sesión exitoso:', response);
-          localStorage.setItem('usuario', JSON.stringify(response));
-          this.loginError = null;
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          console.error('Error al iniciar sesión:', err.error);
-          this.loginError = 'Credenciales inválidas. Por favor, inténtalo de nuevo.';
-        }
-      });
+      try {
+        // 1. Obtener la IP pública
+        const ip = await fetch('https://api.ipify.org?format=json')
+          .then(res => res.json())
+          .then(data => data.ip);
+
+        // 2. Llamar al login con la IP
+        this.usuarioApiService.login(email, password, ip).subscribe({
+          next: (response) => {
+            localStorage.setItem('usuario', JSON.stringify(response));
+            this.loginError = null;
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            this.loginError = 'Credenciales inválidas. Por favor, inténtalo de nuevo.';
+          }
+        });
+      } catch (e) {
+        this.loginError = 'No se pudo obtener la IP pública.';
+      }
     } else {
-      console.error('Formulario inválido');
       this.loginError = 'Por favor, completa correctamente el formulario.';
     }
   }

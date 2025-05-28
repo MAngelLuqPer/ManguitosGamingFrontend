@@ -1,0 +1,49 @@
+<form>
+  <div class="create-community-container">
+    <h2>Editar perfil</h2>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Correo Electrónico</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input
+          matInput
+          id="email"
+          type="email"
+          [formControl]="emailFormControl"
+          [readonly]="true"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput
+                  placeholder="Escribe una breve descripción para tu perfil"
+                  [(ngModel)]="desc"
+                  name="desc"
+                  style="resize: none;"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <mat-icon matPrefix>account_box</mat-icon>
+        <input
+          matInput
+          id="name"
+          [formControl]="nameFormControl"
+        />
+      </mat-form-field>
+      <div class="radio-group">
+        <mat-label>Visibilidad del perfil</mat-label>
+        <mat-radio-group [(ngModel)]="visibility" name="visibility">
+          <mat-radio-button [value]="false">Público</mat-radio-button>
+          <mat-radio-button [value]="true">Privado</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <div class="buttons__container">
+      <button mat-raised-button color="primary" (click)="guardarCambios()" [disabled]="!isFormValid()">
+        Guardar cambios
+      </button>
+      <a mat-button routerLink="/usuario/{{usuarioLogado?.id}}">Cancelar</a>
+    </div>
+  </div>
+</form>

@@ -41,5 +41,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'usuario/:id', // This renders the "/usuario/:id" route on the server (SSR)
     renderMode: RenderMode.Server,
+  },
+  {
+    path: 'editar-usuario/:id', // This renders the "/editar-usuario/:id" route on the server (SSR)
+    renderMode: RenderMode.Server,
   }
 ];

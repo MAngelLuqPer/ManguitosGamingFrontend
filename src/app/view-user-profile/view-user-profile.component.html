@@ -36,14 +36,21 @@
         </div>
       </mat-card-content>
       <mat-card-actions *ngIf="usuarioLogado?.id === usuario?.id">
-        <button mat-raised-button color="warn" class="edit-profile-btn"><mat-icon>mode_edit</mat-icon>Editar perfil</button>
+        <button
+          mat-raised-button
+          color="warn"
+          class="edit-profile-btn"
+          [routerLink]="['/editar-usuario', usuario?.id]"
+        >
+          <mat-icon>mode_edit</mat-icon>Editar perfil
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
 
   <!-- Columna derecha: Publicaciones o aviso de privacidad -->
   <div class="posts-section mt-4">
-    <ng-container *ngIf="usuario?.privacidad === false; else perfilPrivado">
+    <ng-container *ngIf="usuario?.privacidad === false || usuarioLogado?.id === usuario?.id; else perfilPrivado">
       <h2>Publicaciones de {{ usuario?.nombre }}</h2>
       <div *ngIf="publicaciones.length > 0; else noPosts">
         <div *ngFor="let post of publicaciones" class="post">
@@ -68,8 +75,17 @@
                   <p>{{ post.contenido }}</p>
                 </mat-card-content>
                 <mat-card-actions *ngIf="usuarioLogado" style="display: flex; justify-content: flex-end; align-items: center;">
-                  <button mat-button *ngIf="usuarioLogado?.id == post.usuarioId" color="warn">Borrar</button>
-                  <button mat-button color="accent">Reportar</button>
+                  <button mat-button
+                          *ngIf="usuarioLogado?.id == post.usuarioId"
+                          color="warn"
+                          (click)="borrarPost(post.id, $event)">
+                    Borrar
+                  </button>
+                  <button mat-button
+                          color="accent"
+                          (click)="reportarPost(post.id, post.comunidadId, $event)">
+                    Reportar
+                  </button>
                 </mat-card-actions>
               </div>
             </div>
@@ -83,7 +99,7 @@
     <ng-template #perfilPrivado>
       <mat-card class="private-profile-card">
         <mat-card-content>
-          <mat-icon color="warn" style="vertical-align: middle;">lock</mat-icon>
+          <mat-icon style="vertical-align: middle;">lock</mat-icon>
           <span>Este perfil es privado. No puedes ver sus publicaciones.</span>
         </mat-card-content>
       </mat-card>

@@ -61,7 +61,7 @@
                 </div>
                 <mat-menu #userDropdown="matMenu">
                 <button mat-menu-item (click)="logout()" *ngIf="userName">Cerrar sesión</button>
-                <button mat-menu-item>Administrar perfil</button>
+                <button mat-menu-item [routerLink]="['/usuario', userId]" *ngIf="userName">Administrar perfil</button>
                 </mat-menu>
                 <button class="rounded-5 custom-button" routerLink="/login" *ngIf="!userName">Iniciar sesión</button>
                 <button class="reg-btn rounded-5 p-2" routerLink="/register" *ngIf="!userName">Registrarse</button>
