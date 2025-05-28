@@ -36,6 +36,7 @@ html.dark-mode {
     body {
         background-color: #2d3237;
     }
+    --alt-bg-color: #2d3237;
     --header-background-color: #{map.get(map.get($_palettes, primary), 10)};
     --form-bg-color: #{map.get(map.get($_palettes, neutral), 50)};
     --form-content-bg-color: #{map.get(map.get($_palettes, secondary), 10)};

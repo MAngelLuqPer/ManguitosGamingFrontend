@@ -89,6 +89,9 @@ export class MenuComponent implements OnInit {
           ];
         });
       });
+    } else {
+      // Si no hay usuario, solo muestra el menú público
+      this.sideMenu = [...menuList];
     }
   }
 

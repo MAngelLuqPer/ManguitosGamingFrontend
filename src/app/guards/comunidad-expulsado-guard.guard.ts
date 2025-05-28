@@ -11,9 +11,13 @@ export const comunidadExpulsadoGuard: CanActivateFn = async (route, state) => {
   const usuario = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('usuario') || 'null') : null;
   const publicacionId = route.paramMap.get('id');
 
-  if (!usuario || !publicacionId) {
+  // Permitir acceso a no logueados
+  if (!publicacionId) {
     router.navigate(['/']);
     return false;
+  }
+  if (!usuario) {
+    return true; // Usuario no logueado: acceso permitido
   }
 
   try {

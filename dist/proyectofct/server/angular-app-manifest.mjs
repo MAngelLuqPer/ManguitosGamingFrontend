@@ -11,7 +11,19 @@ export default {
   },
   {
     "renderMode": 0,
+    "route": "/usuario/*"
+  },
+  {
+    "renderMode": 0,
+    "route": "/editar-usuario/*"
+  },
+  {
+    "renderMode": 0,
     "route": "/comunidad/*"
+  },
+  {
+    "renderMode": 0,
+    "route": "/comunidad/editar/*"
   },
   {
     "renderMode": 0,
@@ -20,6 +32,14 @@ export default {
   {
     "renderMode": 0,
     "route": "/crear-comunidad"
+  },
+  {
+    "renderMode": 0,
+    "route": "/publicacion/*"
+  },
+  {
+    "renderMode": 0,
+    "route": "/administrar-comunidad/*"
   },
   {
     "renderMode": 0,
@@ -32,8 +52,8 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 31578, hash: 'b8c390cca3ab9f998314830b597b97d300e6bfce4c64d443fc40d18c615f3616', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 17297, hash: '4df07fbb61f17f7dc070504ec930863c16df3175c75ac2146f337b5cb1d2a1b2', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'styles-2BGKCBWE.css': {size: 411794, hash: 'VrZEimh5sYM', text: () => import('./assets-chunks/styles-2BGKCBWE_css.mjs').then(m => m.default)}
+    'index.csr.html': {size: 31578, hash: '7917b9c3ccf2ac87533bfa600a0b9b763f27446f775ae231255e686099d8db26', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 17297, hash: '339acdc7c0e5f61dff937c34bccfd2cdc0bf88f2a602fb9cf44e069fcfd04e31', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'styles-ASMODQPY.css': {size: 411850, hash: '4uxy3U3XRPI', text: () => import('./assets-chunks/styles-ASMODQPY_css.mjs').then(m => m.default)}
   },
 };
