@@ -18,11 +18,15 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import {  MatCard, MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
+import { CommunityEventsService } from '../services/community-events.service';
 import { EditFechaExpulsionModalComponent } from './modals/edit-fecha-expulsion-modal/edit-fecha-expulsion-modal.component';
 @Component({
   selector: 'app-admin-community',
   templateUrl: './admin-community.component.html',
-  imports: [MatCardModule,MatSnackBarModule,RouterLink,MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
+  imports: [FormsModule,MatNativeDateModule,MatDatepickerModule,MatCardModule,MatSnackBarModule,RouterLink,MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
   styleUrls: ['./admin-community.component.scss']
 })
 export class AdminCommunityComponent implements OnInit {
@@ -32,6 +36,9 @@ export class AdminCommunityComponent implements OnInit {
   displayedColumnsReportes: string[] = ['fecha', 'motivo', 'acciones']; // Columnas para la tabla de reportes
   comunidadId!: number;
   expulsados: any[] = [];
+
+  fechaInicio: Date | null = null;
+  fechaFin: Date | null = null;
 
   @ViewChild('usuariosPaginator') usuariosPaginator!: MatPaginator;
   @ViewChild('reportesPaginator') reportesPaginator!: MatPaginator;
@@ -44,7 +51,8 @@ export class AdminCommunityComponent implements OnInit {
     private dialog: MatDialog, // Inyectar MatDialog
     private postApiService: PostsApiService,
     private snackBar: MatSnackBar, // Inyectar MatSnackBar
-    private router: Router // Inyectar Router
+    private router: Router, // Inyectar Router
+    public c: CommunityEventsService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +73,32 @@ export class AdminCommunityComponent implements OnInit {
 
     this.usuarios.filterPredicate = (data: any, filter: string) => {
       return data.nombre.toLowerCase().includes(filter);
+    };
+    this.reportes.filterPredicate = (data: any, filter: string) => {
+      if (!this.fechaInicio && !this.fechaFin) return true;
+      // Normaliza la fecha del reporte a medianoche
+      const fechaReporte = new Date(data.fechaReporte);
+      fechaReporte.setHours(0, 0, 0, 0);
+
+      // Normaliza fechaInicio y fechaFin a medianoche para ignorar la hora.
+      let inicio = this.fechaInicio ? new Date(this.fechaInicio) : null;
+      let fin = this.fechaFin ? new Date(this.fechaFin) : null;
+      if (inicio) inicio.setHours(0, 0, 0, 0);
+      if (fin) fin.setHours(0, 0, 0, 0);
+
+      // Ajusta fecha fin para incluir todo el día seleccionado
+      if (fin) fin.setDate(fin.getDate() + 1);
+
+      if (inicio && fin) {
+        return fechaReporte >= inicio && fechaReporte < fin;
+      }
+      if (inicio) {
+        return fechaReporte >= inicio;
+      }
+      if (fin) {
+        return fechaReporte < fin;
+      }
+      return true;
     };
   }
 
@@ -128,6 +162,11 @@ export class AdminCommunityComponent implements OnInit {
     });
   }
 
+  filtrarPorFecha() {
+    // Forzar el filtrado (el valor puede ser cualquier string, no se usa)
+    this.reportes.filter = '' + Math.random();
+  }
+
   borrarPublicacion(publicacionId: number): void {
     const id = publicacionId;
     Swal.fire({
@@ -149,6 +188,7 @@ export class AdminCommunityComponent implements OnInit {
             });
             this.cargarUsuarios();
             this.cargarReportes();
+            this.c.notifyMenuRefresh();
           },
           error: (error) => {
             console.error('Error al borrar la publicación:', error);

@@ -52,6 +52,18 @@
     </ng-template>
 
     <h2 id="reportes-section" class="m-3">Reportes de la comunidad</h2>
+
+    <!-- Filtro por rango de fechas -->
+    <mat-form-field appearance="fill" class="search-field">
+      <mat-label>Filtrar por fecha</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Fecha inicio" [(ngModel)]="fechaInicio" (ngModelChange)="filtrarPorFecha()">
+        <input matEndDate placeholder="Fecha fin" [(ngModel)]="fechaFin" (ngModelChange)="filtrarPorFecha()">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
     <table mat-table [dataSource]="reportes" class="mat-elevation-z8" *ngIf="reportes.data.length > 0; else noReportes">
       <!-- Columna Fecha -->
       <ng-container matColumnDef="fecha">
