@@ -82,10 +82,11 @@ export class MenuComponent implements OnInit {
             )
           );
 
+          // Solo agrega los menús si hay elementos
           this.sideMenu = [
             ...menuList,
-            new MenuItem('Comunidades', '', 'Tus comunidades', 'group', comunidadItems),
-            new MenuItem('Creadas por ti', '', 'Comunidades que has creado', 'star', creadasItems)
+            ...(comunidadItems.length > 0 ? [new MenuItem('Comunidades', '', 'Tus comunidades', 'group', comunidadItems)] : []),
+            ...(creadasItems.length > 0 ? [new MenuItem('Creadas por ti', '', 'Comunidades que has creado', 'star', creadasItems)] : [])
           ];
         });
       });

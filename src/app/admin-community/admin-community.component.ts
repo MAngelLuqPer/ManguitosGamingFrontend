@@ -188,7 +188,6 @@ export class AdminCommunityComponent implements OnInit {
             });
             this.cargarUsuarios();
             this.cargarReportes();
-            this.c.notifyMenuRefresh();
           },
           error: (error) => {
             console.error('Error al borrar la publicación:', error);
@@ -326,8 +325,9 @@ export class AdminCommunityComponent implements OnInit {
       if (result.isConfirmed) {
         this.comunidadesApiService.borrarComunidad(id).subscribe({
           next: () => {
+            this.c.notifyMenuRefresh();
             this.snackBar.open('Comunidad eliminada con éxito', 'Cerrar', { duration: 2000 });
-            this.router.navigate(['/comunidades']);
+            this.router.navigate(['/']);
           },
           error: (error) => {
             console.error('Error al eliminar la comunidad:', error);
