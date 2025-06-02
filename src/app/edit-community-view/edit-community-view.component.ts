@@ -41,6 +41,8 @@ export class EditCommunityViewComponent implements OnInit {
         next: (data) => {
           this.comunidad = {
             ...data,
+            // Elimina el prefijo "m/" si existe al inicio del nombre
+            nombre: data.nombre.startsWith('m/') ? data.nombre.slice(2).trim() : data.nombre,
             reglas: data.reglas ? data.reglas.split(',').map((r: string) => r.trim()) : ['']
           };
           this.previewBanner = data.banner;

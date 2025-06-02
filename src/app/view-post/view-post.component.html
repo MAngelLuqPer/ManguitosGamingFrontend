@@ -15,26 +15,28 @@
                 <mat-card-header>
                     <mat-card-title>{{ post.titulo }}</mat-card-title>
                     <mat-card-subtitle>
-                        Publicado por u/{{ usuarioNombre}}
+                        Publicado por {{ usuarioNombre}}
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
                     <p>{{ post.contenido }}</p>
                 </mat-card-content>
+                <!-- Botón de reportar -->
                 <mat-card-actions>
-                    <button mat-button color="warn" *ngIf="usuarioId" (click)="abrirModalReporte()">Reportar</button>
+                  <button mat-button color="warn" *ngIf="usuarioId && pertenece" (click)="abrirModalReporte()">Reportar</button>
                 </mat-card-actions>
             </div>
         </div>
     </mat-card>
     <div class="comments-section">
         <h3>Comentarios</h3>
-        <button mat-button *ngIf="usuarioId" (click)="toggleFormularioComentario()">
+        <!-- Botón de comentar -->
+        <button mat-button *ngIf="usuarioId && pertenece" (click)="toggleFormularioComentario()">
             {{ mostrarFormularioComentario ? 'Cancelar' : 'Comentar' }}
         </button>
 
         <!-- Formulario de comentario -->
-        <div *ngIf="mostrarFormularioComentario" class="comentario-formulario">
+        <div *ngIf="mostrarFormularioComentario && pertenece" class="comentario-formulario">
             <mat-form-field appearance="outline" class="full-width">
                 <textarea
                     matInput
@@ -63,7 +65,8 @@
                         <p>{{ comentario.contenido }}</p>
                     </mat-card-content>
                     <div class="comment-actions m-3">
-                        <button mat-button color="primary" *ngIf="usuarioId" (click)="toggleResponder(comentario.id)">
+                        <!-- Botón de responder en cada comentario -->
+                        <button mat-button color="primary" *ngIf="usuarioId && pertenece" (click)="toggleResponder(comentario.id)">
                             {{ comentario.mostrarResponder ? 'Cancelar respuesta' : 'Responder' }}
                         </button>
                         <button mat-button color="warn" *ngIf="comentario.usuarioId === usuarioId" (click)="borrarComentario(comentario.id)">
@@ -72,7 +75,7 @@
                     </div>
 
                     <!-- Formulario de respuesta -->
-                    <div *ngIf="comentario.mostrarResponder" class="respuesta-formulario m-3">
+                    <div *ngIf="comentario.mostrarResponder && pertenece" class="respuesta-formulario m-3">
                         <mat-form-field appearance="outline" class="full-width">
                             <textarea
                                 matInput

@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportPostComponent } from '../main-view-community/modals/report-post/report-post.component';
 import { ReportesApiService } from '../services/API/reportes-api.service';
+import { ComunidadesApiService } from '../services/API/comunidades-api.service';
 
 @Component({
   selector: 'app-view-post',
@@ -29,6 +30,7 @@ export class ViewPostComponent implements OnInit {
   comentarios: any[] = [];
   mostrarFormularioComentario: boolean = false; // Controla la visibilidad del formulario
   usuarioId: number | null = null; // Propiedad global para almacenar el ID del usuario
+  pertenece: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +39,8 @@ export class ViewPostComponent implements OnInit {
     private comentariosApiService: ComentariosApiService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog, // Inyectar MatDialog
-    private reportesApiService: ReportesApiService // Inyectar ReportesApiService
+    private reportesApiService: ReportesApiService, // Inyectar ReportesApiService
+    private comunidadesApiService: ComunidadesApiService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +60,17 @@ export class ViewPostComponent implements OnInit {
       this.postsApiService.getById(this.postId).subscribe({
         next: (data) => {
           this.post = data;
+          // Comprobar si el usuario pertenece a la comunidad
+          if (this.usuarioId && this.post.comunidadId) {
+            this.comunidadesApiService.perteneceAComunidad(this.post.comunidadId, this.usuarioId).subscribe({
+              next: (res) => {
+                this.pertenece = res.pertenece;
+              },
+              error: () => {
+                this.pertenece = false;
+              }
+            });
+          }
           // Obtener el nombre del usuario al que pertenece la publicación
           if (this.post.usuarioId) {
             this.usuarioApiService.getUsuarioById(this.post.usuarioId).subscribe({
@@ -68,7 +82,6 @@ export class ViewPostComponent implements OnInit {
               },
             });
           }
-          // Cargar los comentarios
           this.cargarComentarios();
         },
         error: (err) => {
