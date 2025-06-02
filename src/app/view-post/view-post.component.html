@@ -23,7 +23,7 @@
                 </mat-card-content>
                 <!-- Botón de reportar -->
                 <mat-card-actions>
-                  <button mat-button color="warn" *ngIf="usuarioId && pertenece" (click)="abrirModalReporte()">Reportar</button>
+                  <button mat-button color="warn" *ngIf="usuarioId" (click)="abrirModalReporte()">Reportar</button>
                 </mat-card-actions>
             </div>
         </div>

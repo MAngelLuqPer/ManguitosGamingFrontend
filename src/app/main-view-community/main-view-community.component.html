@@ -67,7 +67,7 @@
                                 </mat-card-content>
                                 <mat-card-actions *ngIf="usuarioLogado" style="display: flex; justify-content: space-between; align-items: center;">
                                     <button mat-button *ngIf="usuarioLogado?.id == comunidad.idUsuAdmin || usuarioLogado?.id == post.usuarioId" color="warn" (click)="borrarPost(post.id, $event)">Borrar</button>
-                                    <button mat-button color="accent" (click)="reportarPost(post.id, $event)" *ngIf="pertenece">Reportar</button>
+                                    <button mat-button color="accent" (click)="reportarPost(post.id, $event)">Reportar</button>
                                 </mat-card-actions>
                             </div>
                         </div>
