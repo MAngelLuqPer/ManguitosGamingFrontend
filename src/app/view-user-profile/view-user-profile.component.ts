@@ -101,6 +101,9 @@ export class ViewUserProfileComponent implements OnInit {
         }
     });
   }
+  goBack() {
+    history.back();
+  }
 
   cargarUsuario(id: number) {
     this.usuariosApiService.getUsuarioById(id).subscribe(usuario => {

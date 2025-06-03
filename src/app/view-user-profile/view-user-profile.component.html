@@ -50,6 +50,10 @@
 
   <!-- Columna derecha: Publicaciones o aviso de privacidad -->
   <div class="posts-section mt-4">
+    <button mat-stroked-button color="primary" (click)="goBack()" style="margin-bottom: 16px;">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </button>
     <ng-container *ngIf="usuario?.privacidad === false || usuarioLogado?.id === usuario?.id; else perfilPrivado">
       <h2>Publicaciones de {{ usuario?.nombre }}</h2>
       <div *ngIf="publicaciones.length > 0; else noPosts">

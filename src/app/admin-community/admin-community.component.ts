@@ -21,12 +21,13 @@ import Swal from 'sweetalert2';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { CommunityEventsService } from '../services/community-events.service';
 import { EditFechaExpulsionModalComponent } from './modals/edit-fecha-expulsion-modal/edit-fecha-expulsion-modal.component';
 @Component({
   selector: 'app-admin-community',
   templateUrl: './admin-community.component.html',
-  imports: [FormsModule,MatNativeDateModule,MatDatepickerModule,MatCardModule,MatSnackBarModule,RouterLink,MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
+  imports: [MatIconModule,FormsModule,MatNativeDateModule,MatDatepickerModule,MatCardModule,MatSnackBarModule,RouterLink,MatInputModule,MatFormFieldModule,MatButtonModule,MatPaginator,CommonModule, MatTableModule],
   styleUrls: ['./admin-community.component.scss']
 })
 export class AdminCommunityComponent implements OnInit {
@@ -120,6 +121,9 @@ export class AdminCommunityComponent implements OnInit {
         console.error('Error al cargar los usuarios:', error);
       },
     });
+  }
+  goBack(): void {
+    history.back();
   }
 
   expulsarUsuario(usuario: any): void {
@@ -347,6 +351,37 @@ export class AdminCommunityComponent implements OnInit {
       error: (error) => {
         console.error('Error al cambiar fecha de expulsión:', error);
         this.snackBar.open('Error al cambiar fecha', 'Cerrar', { duration: 2000 });
+      }
+    });
+  }
+
+  verPerfil(usuarioId: number): void {
+    // Navega al perfil del usuario (ajusta la ruta si tu app usa otra)
+    this.router.navigate(['/usuario', usuarioId]);
+  }
+
+  echarUsuario(usuario: any): void {
+    Swal.fire({
+      title: '¿Echar usuario?',
+      text: `¿Seguro que quieres echar a ${usuario.nombre} de la comunidad? Este se podrá volver a unir más tarde.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, echar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.comunidadesApiService.abandonarComunidad(usuario.id, this.comunidadId).subscribe({
+          next: () => {
+            this.snackBar.open('Usuario expulsado de la comunidad', 'Cerrar', { duration: 2000 });
+            this.cargarUsuarios();
+          },
+          error: (error) => {
+            console.error('Error al echar usuario:', error);
+            this.snackBar.open('Error al echar usuario', 'Cerrar', { duration: 2000 });
+          }
+        });
       }
     });
   }
