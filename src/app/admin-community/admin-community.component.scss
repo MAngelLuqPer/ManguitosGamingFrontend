@@ -32,7 +32,7 @@ nav {
 }
 
 /* Responsive: menú lateral arriba y ancho completo en móviles */
-@media (max-width: 1390px) {
+@media (max-width: 1300px) {
   .admin-community-layout {
     flex-direction: column;
     gap: 0;
@@ -46,6 +46,14 @@ nav {
   .main-content {
     width: 100%;
   }
+    .acciones-cell {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .acciones-cell button {
+    width: 100%;
+  }
 }
 
 /* Opcional: mejora el espaciado de los botones en el menú */
@@ -53,4 +61,9 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.acciones-cell {
+  display: flex;
+  gap: 8px;
 }
