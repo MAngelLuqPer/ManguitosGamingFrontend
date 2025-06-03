@@ -56,14 +56,3 @@ nav {
   }
 }
 
-/* Opcional: mejora el espaciado de los botones en el menú */
-.side-card nav {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.acciones-cell {
-  display: flex;
-  gap: 8px;
-}

@@ -103,7 +103,14 @@
     </ng-template>
 
     <h2 id="expulsiones-section" class="m-3">Expulsiones de la comunidad</h2>
-    <table mat-table [dataSource]="expulsados" class="mat-elevation-z8" *ngIf="expulsados.length > 0; else noExpulsados">
+
+    <!-- Buscador de expulsados -->
+    <mat-form-field appearance="fill" class="search-field">
+      <mat-label>Buscar usuario expulsado</mat-label>
+      <input matInput (keyup)="aplicarFiltroExpulsados($event)" placeholder="Escribe un nombre">
+    </mat-form-field>
+
+    <table mat-table [dataSource]="expulsados" class="mat-elevation-z8" *ngIf="expulsados.data.length > 0; else noExpulsados">
       <!-- Columna Usuario -->
       <ng-container matColumnDef="usuario">
         <th mat-header-cell *matHeaderCellDef> Usuario </th>
@@ -138,6 +145,7 @@
       <tr mat-header-row *matHeaderRowDef="['usuario', 'razon', 'fechaFin', 'acciones']"></tr>
       <tr mat-row *matRowDef="let row; columns: ['usuario', 'razon', 'fechaFin', 'acciones'];"></tr>
     </table>
+    <mat-paginator #expulsadosPaginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     <ng-template #noExpulsados>
       <p>No hay usuarios expulsados actualmente.</p>
     </ng-template>

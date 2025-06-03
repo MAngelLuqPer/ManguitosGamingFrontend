@@ -36,13 +36,15 @@ export class AdminCommunityComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'email', 'acciones'];
   displayedColumnsReportes: string[] = ['fecha', 'motivo', 'acciones']; // Columnas para la tabla de reportes
   comunidadId!: number;
-  expulsados: any[] = [];
+  expulsados: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   fechaInicio: Date | null = null;
   fechaFin: Date | null = null;
 
   @ViewChild('usuariosPaginator') usuariosPaginator!: MatPaginator;
   @ViewChild('reportesPaginator') reportesPaginator!: MatPaginator;
+  @ViewChild('expulsadosPaginator') expulsadosPaginator!: MatPaginator;
+
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
@@ -106,6 +108,10 @@ export class AdminCommunityComponent implements OnInit {
   aplicarFiltro(event: Event): void {
     const filtro = (event.target as HTMLInputElement).value;
     this.usuarios.filter = filtro.trim().toLowerCase();
+  }
+  aplicarFiltroExpulsados(event: Event): void {
+    const filtro = (event.target as HTMLInputElement).value;
+    this.expulsados.filter = filtro.trim().toLowerCase();
   }
 
   cargarUsuarios(): void {
@@ -249,11 +255,12 @@ export class AdminCommunityComponent implements OnInit {
   cargarExpulsados(): void {
     this.comunidadesApiService.getUsuariosExpulsados(this.comunidadId).subscribe({
       next: (expulsados) => {
-        // Limpiar el sufijo [UTC] de todas las fechas
-        this.expulsados = expulsados.map((exp: any) => ({
+        const expulsadosLimpios = expulsados.map((exp: any) => ({
           ...exp,
-          fechaFin: exp.fechaFin ? exp.fechaFin.replace('[UTC]', '') : null
+          fechaFin: exp.fechaFin ? exp.fechaFin.replace('[UTC]', '') : null,
         }));
+        this.expulsados.data = expulsadosLimpios;
+        this.expulsados.paginator = this.expulsadosPaginator;
       },
       error: (error) => {
         console.error('Error al cargar los expulsados:', error);
