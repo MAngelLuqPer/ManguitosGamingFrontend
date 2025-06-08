@@ -29,5 +29,7 @@ export class ComentariosApiService {
   getRespuestasByComentarioId(comentarioId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/comentarios/respuestas/${comentarioId}`);
   }
-
+  getComentariosByComunidadId(comunidadId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/comentarios/comunidad/${comunidadId}`);
+  }
 }

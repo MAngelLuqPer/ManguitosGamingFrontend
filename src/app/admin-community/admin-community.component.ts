@@ -128,6 +128,9 @@ export class AdminCommunityComponent implements OnInit {
       },
     });
   }
+  goToGraphics(): void {
+    this.router.navigate(['/comunidad/graficas', this.comunidadId]);
+  }
   goBack(): void {
     history.back();
   }

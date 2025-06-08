@@ -1,0 +1,19 @@
+<h2 class="pl-3">Gráficas de publicaciones</h2>
+<div *ngIf="loading">Cargando gráfica de posts...</div>
+<div *ngIf="!loading" class="chart-container">
+  <canvas baseChart
+    [data]="{ labels: barChartLabels, datasets: barChartData }"
+    [options]="barChartOptions"
+    [type]="barChartType">
+  </canvas>
+</div>
+
+<h2 class="pl-3 mt-4">Gráficas de comentarios</h2>
+<div *ngIf="loadingComments">Cargando gráfica de comentarios...</div>
+<div *ngIf="!loadingComments" class="chart-container">
+  <canvas baseChart
+    [data]="{ labels: commentChartLabels, datasets: commentChartData }"
+    [options]="barChartOptions"
+    [type]="commentChartType">
+  </canvas>
+</div>

@@ -16,7 +16,7 @@ html {
     ));
     --text-color: black;
     --header-text-color: #{map.get(map.get($_palettes, primary), 50)};
-    --form-bg-color: #{map.get(map.get($_palettes, secondary), 90)};
+    // --form-bg-color: #{map.get(map.get($_palettes, secondary), 90)};
     --form-content-bg-color: #{map.get(map.get($_palettes, primary), 100)};
     --hover-color: #{map.get(map.get($_palettes, secondary), 90)};
     --selected-color: #{map.get(map.get($_palettes, primary), 40)};

@@ -16,6 +16,7 @@ import { comunidadExpulsadoGuard } from './guards/comunidad-expulsado-guard.guar
 import { ViewUserProfileComponent } from './view-user-profile/view-user-profile.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { editUserGuard } from './guards/edit-user.guard';
+import { GraphicsComponent } from './admin-community/graphics/graphics.component';
 export const routes: Routes = [
   {
     path: '',
@@ -30,8 +31,11 @@ export const routes: Routes = [
       {path: 'crear-comunidad',component: CreateCommunityComponent,canActivate: [authGuard]},
       {path: 'publicacion/:id', component: ViewPostComponent, canActivate: [comunidadExpulsadoGuard] },
       {path: 'administrar-comunidad/:id', component: AdminCommunityComponent, canActivate: [isAdminGuard] },
+      {path: 'comunidad/graficas/:id', component: GraphicsComponent },
+      
     ],
   },
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
+   { path: 'register', component: RegisterComponent },
+   { path: 'login', component: LoginComponent }
+
 ];
