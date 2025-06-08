@@ -6,10 +6,11 @@ import { BaseChartDirective } from 'ng2-charts';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ComentariosApiService } from '../../services/API/comentarios-api.service';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-graphics',
-  imports: [BaseChartDirective, CommonModule],
+  imports: [BaseChartDirective, CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './graphics.component.html',
   styleUrl: './graphics.component.scss'
 })
@@ -42,7 +43,9 @@ export class GraphicsComponent implements OnInit {
     this.cargarDatos();
     this.cargarComentarios();
   }
-
+  goBack(): void {
+    window.history.back();
+  }
   cargarDatos(): void {
     this.comunidadesApiService.getPostsByComunidadId(this.comunidadId).subscribe({
       next: async (posts) => {

@@ -1,3 +1,7 @@
+<button mat-stroked-button color="primary" (click)="goBack()" class="mb-2">
+    <mat-icon>arrow_back</mat-icon>
+    Volver
+</button>
 <h2 class="pl-3">Gráficas de publicaciones</h2>
 <div *ngIf="loading">Cargando gráfica de posts...</div>
 <div *ngIf="!loading" class="chart-container">

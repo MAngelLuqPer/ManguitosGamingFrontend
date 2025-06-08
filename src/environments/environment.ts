@@ -1,3 +1,3 @@
 export const environment = {
-    baseUrl: 'http://localhost:8080/proyectofct/api'
+    baseUrl: 'http://manguitosgaming.ddns.net:8081/proyectofct/api'
 };
