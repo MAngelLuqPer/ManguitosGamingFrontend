@@ -68,6 +68,7 @@ export class EditUserComponent implements OnInit {
     this.usuarioApi.editarUsuario(this.usuarioLogado.id, datos).subscribe({
       next: (resp) => {
         // Actualiza localStorage y redirige al perfil
+        console.log('Perfil actualizado:', resp);
         localStorage.setItem('usuario', JSON.stringify({ ...this.usuarioLogado, ...resp }));
         this.snackBar.open('Perfil actualizado correctamente.', 'Cerrar', { duration: 3000 });
         setTimeout(() => {

@@ -40,9 +40,40 @@ export class GraphicsComponent implements OnInit {
 
   ngOnInit(): void {
     this.comunidadId = this.route.snapshot.paramMap.get('id')!;
+    this.setChartOptions();
     this.cargarDatos();
     this.cargarComentarios();
+
+    // Escucha cambios de modo oscuro
+    const observer = new MutationObserver(() => this.setChartOptions());
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   }
+
+  // Configura las opciones de los gráficos según el modo
+  setChartOptions() {
+    const isDark = document.documentElement.classList.contains('dark-mode');
+    this.barChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: {
+            color: isDark ? '#fff' : '#222'
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: isDark ? '#fff' : '#222' },
+          grid: { color: isDark ? '#444' : '#eee' }
+        },
+        y: {
+          ticks: { color: isDark ? '#fff' : '#222' },
+          grid: { color: isDark ? '#444' : '#eee' }
+        }
+      }
+    };
+  }
+
   goBack(): void {
     window.history.back();
   }

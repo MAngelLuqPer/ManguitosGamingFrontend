@@ -34,7 +34,7 @@ export class AdminCommunityComponent implements OnInit {
   usuarios: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   reportes: MatTableDataSource<any> = new MatTableDataSource<any>([]); // Nueva propiedad para los reportes
   displayedColumns: string[] = ['nombre', 'email', 'acciones'];
-  displayedColumnsReportes: string[] = ['fecha', 'motivo', 'acciones']; // Columnas para la tabla de reportes
+  displayedColumnsReportes: string[] = ['fecha', 'motivo','UsuarioQueReporta', 'acciones']; // Columnas para la tabla de reportes
   comunidadId!: number;
   expulsados: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
